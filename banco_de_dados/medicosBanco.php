@@ -1,0 +1,145 @@
+<?php
+session_abort();
+session_start();
+include("conexao.php");
+
+if (isset($_GET['delete'])) {
+    $id = intval($_GET['delete']);
+    $sql_query = $mysqli->query("SELECT * FROM medicos WHERE id = '$id'") or die($mysqli->error);
+    $arquivo = $sql_query->fetch_assoc();
+    $mysqli->query("DELETE FROM medicos WHERE id = '$id'") or die($mysqli->error);
+    $mysqli->query("DELETE FROM detalhes_clinica WHERE id_medico = '$id'") or die($mysqli->error);
+    $mysqli->query("DELETE FROM detalhes_medico WHERE id_medico = '$id'") or die($mysqli->error);
+
+    header("Location: listaMedicos.php");
+}
+
+if (isset($_POST["enviar"])) {
+    $nome = trim($_POST['nome']);
+    $email = trim($_POST['email']);
+    $cpf = trim($_POST['cpf']);
+    $senha = trim(md5($_POST['password']));
+
+    $mysqli->query("INSERT INTO medicos (nome, email, cpf, senha) VALUES('$nome', '$email', '$cpf', '$senha')") or die($mysqli->error);
+
+    header("Location: cadastroMedicos.php");
+}
+
+
+if (isset($_GET["salvar"])) {
+    $id_medico = trim($_POST['id_medico']);
+    $id_clinica = trim($_POST['id_clinica']);
+
+    // Verificar se a combinação já existe na tabela
+    $check_query = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_medico = '$id_medico' AND id_clinica = '$id_clinica'");
+
+    if ($check_query->num_rows > 0) {
+        // Se a combinação existe, obtenha o valor atual de verificar
+        $existing_row = $check_query->fetch_assoc();
+        $existing_verificar = $existing_row['verificar'];
+
+        // Troque o valor de verificar para o oposto
+        $new_verificar = $existing_verificar == '1' ? '0' : '1';
+
+        // Atualize o valor da coluna verificar
+        $update_query = $mysqli->query("UPDATE detalhes_clinica SET verificar = '1' WHERE id_medico = '$id_medico' AND id_clinica = '$id_clinica'");
+
+        if (!$update_query) {
+            die($mysqli->error);
+        }
+    } else {
+        // Se a combinação não existe, execute a inserção
+        $insert_query = $mysqli->query("INSERT INTO detalhes_clinica (id_clinica, id_medico, verificar) VALUES('$id_clinica', '$id_medico', '1')");
+
+        if (!$insert_query) {
+            die($mysqli->error);
+        }
+    }
+}
+
+if (isset($_GET["modificar"])) {
+    $id_medico = trim($_POST['id_medico']);
+    $id_clinica = trim($_POST['id_clinica']);
+    $verificar = trim($_POST['verificar']);
+
+    $check_query = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_medico = '$id_medico' AND id_clinica = '$id_clinica'");
+
+    if ($check_query->num_rows > 0) {
+        // Se a combinação existe, obtenha o valor atual de verificar
+        $existing_row = $check_query->fetch_assoc();
+        $existing_verificar = $existing_row['verificar'];
+
+        // Troque o valor de verificar para o oposto
+        $new_verificar = $existing_verificar == '1' ? '0' : '1';
+
+        // Atualize o valor da coluna verificar
+        $update_query = $mysqli->query("UPDATE detalhes_clinica SET verificar = '0' WHERE id_medico = '$id_medico' AND id_clinica = '$id_clinica'");
+
+        if (!$update_query) {
+            die($mysqli->error);
+        }
+    }
+}
+
+
+if (isset($_POST["enviar_nome_medico"])) {
+    echo '<script>window.location.href = window.location.href;</script>';
+}
+
+if (isset($_GET["salvar-modalidade-medico"])) {
+    $id_modalidade = trim($_POST['id_modalidade']);
+    $id_medico = trim($_POST['id_medico']);
+
+    // Verificar se a combinação já existe na tabela
+    $check_query = $mysqli->query("SELECT * FROM detalhes_medico WHERE id_modalidade = '$id_modalidade' AND id_medico = '$id_medico'");
+
+    if ($check_query->num_rows > 0) {
+        // Se a combinação existe, obtenha o valor atual de verificar
+        $existing_row = $check_query->fetch_assoc();
+        $existing_verificar = $existing_row['verificar'];
+
+        // Troque o valor de verificar para o oposto
+        $new_verificar = $existing_verificar == '1' ? '0' : '1';
+
+        // Atualize o valor da coluna verificar
+        $update_query = $mysqli->query("UPDATE detalhes_medico SET verificar = '1' WHERE id_modalidade = '$id_modalidade' AND id_medico = '$id_medico'");
+
+        if (!$update_query) {
+            die($mysqli->error);
+        }
+    } else {
+        // Se a combinação não existe, execute a inserção
+        $insert_query = $mysqli->query("INSERT INTO detalhes_medico (id_medico, id_modalidade, verificar) VALUES('$id_medico', '$id_modalidade', '1')");
+
+        if (!$insert_query) {
+            die($mysqli->error);
+        }
+    }
+}
+
+if (isset($_GET["modificar-modalidade-medico"])) {
+    $id_modalidade = trim($_POST['id_modalidade']);
+    $id_medico = trim($_POST['id_medico']);
+    $verificar = trim($_POST['verificar']);
+
+    // Verificar se a combinação já existe na tabela
+    $check_query = $mysqli->query("SELECT * FROM detalhes_medico WHERE id_modalidade = '$id_modalidade' AND id_medico = '$id_medico'");
+
+    if ($check_query->num_rows > 0) {
+        // Se a combinação existe, obtenha o valor atual de verificar
+        $existing_row = $check_query->fetch_assoc();
+        $existing_verificar = $existing_row['verificar'];
+
+        // Troque o valor de verificar para o oposto
+        $new_verificar = $existing_verificar == '1' ? '0' : '1';
+
+        // Atualize o valor da coluna verificar
+        $update_query = $mysqli->query("UPDATE detalhes_medico SET verificar = '0' WHERE id_modalidade = '$id_modalidade' AND id_medico = '$id_medico'");
+
+        if (!$update_query) {
+            die($mysqli->error);
+        }
+    }
+}
+?>
+

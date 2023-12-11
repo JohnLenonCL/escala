@@ -1,0 +1,10 @@
+#indicador {
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 1s ease;
+
+}

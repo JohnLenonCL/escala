@@ -46,3 +46,5 @@
 
 <!-- Custom Theme Scripts -->
 <script src="vendors/build/js/custom.js"></script>
+
+<!-- Alteração de teste -->

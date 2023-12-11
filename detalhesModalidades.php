@@ -34,7 +34,7 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
 
             <!-- page content -->
             <div class="right_col" role="main">
-            <div class="page-title">
+                <div class="page-title">
                     <div class="title_left">
                         <h3>Detalhes da modalidade "<?php
                                                     $id = $_GET['id'];
@@ -75,7 +75,7 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                                             <tr>
                                                 <th style="width: 0px;">#</th>
                                                 <th>Nome</th>
-                                                <th style="width: 0px;">Opções</th>
+                                                <th style="width: 0px;">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -87,8 +87,8 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                                                     <tr id="<?php echo $submodalidades['id'] ?>">
                                                         <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
                                                         <td class="align-middle"> <?php echo $submodalidades['nome']; ?></td>
-                                                        <td class="align-middle">
-                                                            <a class='fa fa-trash d-flex justify-content-center' id="<?php echo $submodalidades['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg"></a>
+                                                        <td class="align-middle d-flex justify-content-center">
+                                                            <a href="javascript:void(0);" class='fa fa-trash' id="<?php echo $submodalidades['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg"></a>
                                                         </td>
 
                                                     </tr>
@@ -154,17 +154,17 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="post" novalidate>
+                            <form action="" method="post" onsubmit="return validarFormulario()">
                                 <div class="field item form-group">
                                     <label class="col-form-label col-3 label-align">Nome<span class="required">*</span></label>
                                     <div class="col-6">
                                         <input class="form-control" id="subnome" required="required" />
+                                        <span id="msg"></span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-6 offset-md-3 d-flex justify-content-center mt-3">
-                                        <button type='submit' name="subenviar" class="btn btn-success" onclick="receberId2()">Enviar</button>
-                                        <button type='reset' class="btn btn-secondary">Resetar</button>
+                                        <button type='submit' name="subenviar" class="btn btn-success">Enviar</button>
                                     </div>
                                 </div>
                             </form>
@@ -172,6 +172,23 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                     </div>
                 </div>
             </div>
+
+            <!-- Validação -->
+            <script>
+                function validarFormulario() {
+                    var nomeInput = document.getElementById('subnome').value;
+
+                    if (nomeInput.trim() === '') {
+                        document.getElementById('msg').textContent = 'O campo não pode estar vazio.';
+                        return false;
+                    } else {
+                        document.getElementById('msg').textContent = '';
+                        receberId2()
+                        return true;
+                    }
+                }
+            </script>
+            <!-- /Validação -->
 
 
             <script>

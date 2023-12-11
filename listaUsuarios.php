@@ -52,7 +52,7 @@ include("banco_de_dados/usuariosBanco.php");
                                                 <th>Nome</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
-                                                <th style="width: 0px;">Opções</th>
+                                                <th style="width: 0px;">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -68,8 +68,13 @@ include("banco_de_dados/usuariosBanco.php");
                                                     <td class="align-middle"><?php echo $usuarios['nome']; ?></td>
                                                     <td class="align-middle"><?php echo $usuarios['email']; ?></td>
                                                     <td class="align-middle"><?php echo $usuarios['cpf']; ?></td>
-                                                    <td class="align-middle d-flex justify-content-center">
-                                                        <a class='fa fa-trash' id="<?php echo $usuarios['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg"></a>
+                                                    <td class="align-middle d-flex justify-content-between">
+                                                        <div>
+                                                            <a href="cadastroUsuarios.php?id=<?php echo $usuarios['id'] ?>" class='fa fa-pencil'></a>
+                                                        </div>
+                                                        <div>
+                                                            <a href="javascript:void(0);" id="<?php echo $usuarios['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>
+                                                        </div>
                                                     </td>
                                                 </tr>
 

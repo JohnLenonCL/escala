@@ -20,7 +20,7 @@ if (isset($_POST["entrar"])) {
         $_SESSION["id"] = $id;
         $_SESSION["nome"] = $nome;
         $_SESSION["usuario_autenticado"] = true;
-        header("Location: cadastroClinicas.php");
+        header("Location: listaClinicas.php");
         exit();
     } else {
         header("Location: index.php?erro");

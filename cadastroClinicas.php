@@ -46,7 +46,7 @@ include("banco_de_dados/clinicasBanco.php");
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form class="formulario" action="" method="post" novalidate>
+                                    <form class="formulario" action="" method="post" data-parsley-validate>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3  label-align">Nome<span class="required">*</span></label>
                                             <div class="col-6">
@@ -64,7 +64,6 @@ include("banco_de_dados/clinicasBanco.php");
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
                                                     <button type='submit' name="enviar" class="btn btn-success">Enviar</button>
-                                                    <button type='reset' class="btn btn-secondary">Resetar</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -79,36 +78,8 @@ include("banco_de_dados/clinicasBanco.php");
     </div>
     <!-- /page content -->
 
-    <!-- Javascript functions	-->
     <?php include("scripts.php"); ?>
-    <!-- Validator.js -->
-    <script src="vendors/validator/multifield.js"></script>
-    <script src="vendors/validator/validator.js"></script>
     
-    <script>
-        // initialize a validator instance from the "FormValidator" constructor.
-        // A "<form>" element is optionally passed as an argument, but is not a must
-        var validator = new FormValidator({
-            "events": ['blur', 'input', 'change']
-        }, document.forms[0]);
-        // on form "submit" event
-        document.forms[0].onsubmit = function(e) {
-            var submit = true,
-                validatorResult = validator.checkAll(this);
-            console.log(validatorResult);
-            return !!validatorResult.valid;
-        };
-        // on form "reset" event
-        document.forms[0].onreset = function(e) {
-            validator.reset();
-        };
-        // stuff related ONLY for this demo page:
-        $('.toggleValidationTooltips').change(function() {
-            validator.settings.alerts = !this.checked;
-            if (this.checked)
-                $('form .alert').remove();
-        }).prop('checked', false);
-    </script>
 
 
 </body>

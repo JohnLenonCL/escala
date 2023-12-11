@@ -18,6 +18,6 @@ if (isset($_POST["enviar"])) {
 
     $mysqli->query("INSERT INTO clinicas (nome, endereco) VALUES('$nome', '$endereco')") or die($mysqli->error);
 
-    header("Location: cadastroClinicas.php");
+    echo '<script>window.location.href = window.location.href;</script>';
 }
 

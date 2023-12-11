@@ -49,8 +49,7 @@ include("banco_de_dados/modalidadesBanco.php");
                                             <tr>
                                                 <th style="width: 0px">#</th>
                                                 <th>Nome</th>
-                                                <th style="width: 0px">Detalhes</th>
-                                                <th style="width: 0px">Opções</th>
+                                                <th style="width: 0px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -62,22 +61,29 @@ include("banco_de_dados/modalidadesBanco.php");
                                             foreach ($modalidades as $modalidades) :
                                             ?>
 
-
                                                 <tr>
                                                     <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
                                                     <td class="align-middle"><?php echo $modalidades['nome']; ?></td>
-                                                    <td>
-                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $modalidades['id'] ?>" method="post">
+                                                    <td class="align-middle d-flex justify-content-between">
+                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $modalidades['id'] ?>" method="POST">
                                                             <input type="text" name="nome_modalidade" value="<?php echo $modalidades['nome']; ?>" hidden="true">
-                                                            <button class="fa fa-eye d-flex m-auto" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $modalidades['id'] ?>"></button>
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;"></a>
                                                         </form>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <a class='fa fa-list-alt mr-5' id="<?php echo $modalidades['id'] ?>" onclick="encaminharId2(this)" data-toggle="modal" data-target=".modal2"></a>
-                                                        <a class='fa fa-trash' id="<?php echo $modalidades['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg"></a>
+                                                        <div>
+                                                            <a href="cadastroModalidades.php?id=<?php echo $modalidades['id'] ?>" class='fa fa-pencil'></a>
+                                                        </div>
+                                                        <div>
+                                                            <a href="javascript:void(0);" id="<?php echo $modalidades['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>
+                                                        </div>
                                                     </td>
                                                 </tr>
 
+                                                <script>
+                                                    function submitForm(link) {
+                                                        var form = link.closest('form');
+                                                        form.submit();
+                                                    }
+                                                </script>
 
                                             <?php
                                             endforeach;
@@ -130,49 +136,6 @@ include("banco_de_dados/modalidadesBanco.php");
             </script>
             <!-- /Modal -->
 
-            <!-- Modal 2 -->
-            <div class="modal fade modal2" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Cadastro de Sub-Modalidades</h4>
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="post" novalidate>
-                                <div class="field item form-group">
-                                    <label class="col-form-label col-3 label-align">Nome<span class="required">*</span></label>
-                                    <div class="col-6">
-                                        <input class="form-control" id="subnome" name="name" required="required" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-6 offset-md-3 d-flex justify-content-center mt-3">
-                                        <button type='submit' name="subenviar" class="btn btn-success" onclick="receberId2()">Enviar</button>
-                                        <button type='reset' class="btn btn-secondary">Resetar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                var cadastrar
-
-                function encaminharId2(botaoClicado) {
-                    cadastrar = botaoClicado.id
-                }
-
-                function receberId2() {
-                    var subnome = document.getElementById("subnome").value
-                    window.location.href = "listaModalidades.php?id=" + cadastrar + "&subnome=" + subnome
-
-                }
-            </script>
-            <!-- /Modal 2 -->
         </div>
     </div>
 

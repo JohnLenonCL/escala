@@ -50,8 +50,7 @@ include("banco_de_dados/medicosBanco.php");
                                                 <th>Nome</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
-                                                <th style="width: 0px;">Detalhes</th>
-                                                <th style="width: 0px">Opções</th>
+                                                <th style="width: 0px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -69,16 +68,25 @@ include("banco_de_dados/medicosBanco.php");
                                                     <td class="align-middle"><?php echo $medicos['nome']; ?></td>
                                                     <td class="align-middle"><?php echo $medicos['email']; ?></td>
                                                     <td class="align-middle"><?php echo $medicos['cpf']; ?></td>
-                                                    <td class="align-middle">
-                                                        <form style="margin: 0px;" action="detalhesMedicos.php?id=<?php echo $medicos['id'] ?>" method="post">
+                                                    <td class="align-middle d-flex justify-content-between">
+                                                        <form style="margin: 0px;" action="detalhesMedicos.php?id=<?php echo $medicos['id'] ?>" method="POST">
                                                             <input type="text" name="nome_medico" value="<?php echo $medicos['nome']; ?>" hidden="true">
-                                                            <button class="fa fa-eye d-flex m-auto" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_medico" id="<?php echo $medicos['id'] ?>"></button>
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;"></a>
                                                         </form>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <a class='fa fa-trash d-flex justify-content-center' id="<?php echo $medicos['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg"></a>
+                                                        <div>
+                                                            <a href="cadastroMedicos.php?id=<?php echo $medicos['id'] ?>" class='fa fa-pencil'></a>
+                                                        </div>
+                                                        <div>
+                                                            <a href="javascript:void(0);" id="<?php echo $medicos['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>
+                                                        </div>
                                                     </td>
                                                 </tr>
+                                                <script>
+                                                    function submitForm(link) {
+                                                        var form = link.closest('form');
+                                                        form.submit();
+                                                    }
+                                                </script>
 
                                             <?php
                                             endforeach;

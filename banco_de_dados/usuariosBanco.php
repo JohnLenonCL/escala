@@ -16,7 +16,7 @@ if (isset($_POST["enviar"])) {
     $cpf = trim($_POST['cpf']);
     $senha = trim($_POST['password']);
     $hashSenha = password_hash($senha, PASSWORD_DEFAULT);
-
-
     $mysqli->query("INSERT INTO usuarios (nome, email, cpf, senha) VALUES('$nome', '$email', '$cpf', '$hashSenha')") or die($mysqli->error);
+    
+    echo '<script>window.location.href = window.location.href;</script>';
 }

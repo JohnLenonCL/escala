@@ -17,6 +17,7 @@ if (isset($_POST["enviar"])) {
     $nome = trim($_POST['nome']);
 
     $mysqli->query("INSERT INTO modalidades (nome) VALUES('$nome')") or die($mysqli->error);
+    echo '<script>window.location.href = window.location.href;</script>';
 }
 
 

@@ -1,17 +1,17 @@
 <!-- jQuery -->
-<script src="../fornecedores/jquery/dist/jquery.js"></script>
+<script src="../vendors/jquery/dist/jquery.js"></script>
 <!-- Bootstrap -->
-<script src="../fornecedores/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="../vendors/bootstrap/dist/js/bootstrap.bundle.js"></script>
 <!-- FastClick -->
-<script src="../fornecedores/fastclick/lib/fastclick.js"></script>
+<script src="../vendors/fastclick/lib/fastclick.js"></script>
 <!-- NProgress -->
-<script src="../fornecedores/nprogress/nprogress.js"></script>
+<script src="../vendors/nprogress/nprogress.js"></script>
 <!-- iCheck -->
-<script src="../fornecedores/iCheck/icheck.min.js"></script>
+<script src="../vendors/iCheck/icheck.min.js"></script>
 <!-- PNotify -->
-<script src="../fornecedores/pnotify/dist/pnotify.js"></script>
-<script src="../fornecedores/pnotify/dist/pnotify.buttons.js"></script>
-<script src="../fornecedores/pnotify/dist/pnotify.nonblock.js"></script>
+<script src="../vendors/pnotify/dist/pnotify.js"></script>
+<script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script src="../vendors/pnotify/dist/pnotify.nonblock.js"></script>
 <!-- Datatables -->
 <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
 <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -45,4 +45,4 @@
 
 
 <!-- Custom Theme Scripts -->
-<script src="../fornecedores/build/js/custom.js"></script>
+<script src="../vendors/build/js/custom.js"></script>

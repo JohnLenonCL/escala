@@ -98,7 +98,7 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                                 <tr>
                                                     <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
                                                     <td class="align-middle"> <?php echo $modalidades['nome']; ?></td>
-                                                    <td class="align-middle d-flex justify-content-center">
+                                                    <td class="align-middle">
                                                         <input id="switch" data-id="<?php echo $modalidades['id'] ?>" type="checkbox" class="js-switch" <?php
                                                                                                                                                         foreach ($algo as $item) :
 
@@ -109,13 +109,19 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                                                                                                                                         endforeach;
                                                                                                                                                         ?> />
                                                     </td>
-                                                    <td>
+                                                    <td class="align-middle d-flex justify-content-center">
                                                         <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $modalidades['id'] ?>" method="post">
                                                             <input type="text" name="nome_modalidade" value="<?php echo $modalidades['nome']; ?>" hidden="true">
-                                                            <button class="fa fa-eye d-flex m-auto" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $modalidades['id'] ?>"></button>
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $modalidades['id'] ?>"></a>
                                                         </form>
                                                     </td>
                                                 </tr>
+                                                <script>
+                                                    function submitForm(link) {
+                                                        var form = link.closest('form');
+                                                        form.submit();
+                                                    }
+                                                </script>
                                             <?php
                                             endforeach;
 

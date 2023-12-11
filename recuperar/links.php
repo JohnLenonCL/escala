@@ -28,4 +28,4 @@
 <link href="../vendors/dropzone/dist/dropzone.css" rel="stylesheet">
 
 <!-- Custom Theme Style -->
-<link href="../fornecedores/build/css/custom.css" rel="stylesheet">
+<link href="../vendors/build/css/custom.css" rel="stylesheet">

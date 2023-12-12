@@ -74,7 +74,7 @@ include("banco_de_dados/medicosBanco.php");
                                                             <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;"></a>
                                                         </form>
                                                         <div>
-                                                            <a href="cadastroMedicos.php?id=<?php echo $medicos['id'] ?>" class='fa fa-pencil'></a>
+                                                            <a href="editarCadastros.php?medico=<?php echo $medicos['id'] ?>" class='fa fa-pencil'></a>
                                                         </div>
                                                         <div>
                                                             <a href="javascript:void(0);" id="<?php echo $medicos['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>

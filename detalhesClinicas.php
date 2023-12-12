@@ -68,7 +68,7 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Modalidades</h2>
+                                <a href="listaClinicas.php"><h2>Clínicas</h2></a> <h2>/</h2> <h2>Modalidades </h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -133,7 +133,7 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
 
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Médicos</h2>
+                            <a href="listaClinicas.php"><h2>Clínicas</h2></a> <h2>/</h2> <h2>Médicos</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>

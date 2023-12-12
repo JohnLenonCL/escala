@@ -1,7 +1,6 @@
 <!-- sidebar menu -->
 <div class="navbar nav_title" style="border: 0;">
-    <a href="index.php" class="site_title d-flex justify-content-center"><span>Ammo -
-            Escala</span></a>
+    <a href="listaClinicas.php" class="site_title d-flex justify-content-center"><span>AMMO - Escala</span></a>
 </div>
 
 <div class="clearfix"></div>

@@ -70,7 +70,7 @@ include("banco_de_dados/usuariosBanco.php");
                                                     <td class="align-middle"><?php echo $usuarios['cpf']; ?></td>
                                                     <td class="align-middle d-flex justify-content-between">
                                                         <div>
-                                                            <a href="cadastroUsuarios.php?id=<?php echo $usuarios['id'] ?>" class='fa fa-pencil'></a>
+                                                            <a href="editarCadastros.php?usuario=<?php echo $usuarios['id'] ?>" class='fa fa-pencil'></a>
                                                         </div>
                                                         <div>
                                                             <a href="javascript:void(0);" id="<?php echo $usuarios['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>

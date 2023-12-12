@@ -82,7 +82,7 @@ if (isset($_GET["modificar"])) {
 }
 
 
-if (isset($_POST["enviar_nome_medico"])) {
+if (isset($_POST["nome_medico"])) {
     echo '<script>window.location.href = window.location.href;</script>';
 }
 

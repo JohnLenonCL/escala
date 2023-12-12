@@ -70,10 +70,10 @@ include("banco_de_dados/modalidadesBanco.php");
                                                             <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;"></a>
                                                         </form>
                                                         <div>
-                                                            <a href="cadastroClinicas.php?id=<?php echo $clinicas['id'] ?>" class='fa fa-pencil'></a>
+                                                            <a href="editarCadastros.php?clinica=<?php echo $clinicas['id'] ?>" class='fa fa-pencil'></a>
                                                         </div>
                                                         <div>
-                                                            <a href="javascript:void(0);" style="cursor:pointer;" id="<?php echo $clinicas['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>
+                                                            <a href="javascript:void(0);" id="<?php echo $clinicas['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>
                                                         </div>
                                                     </td>
                                                 </tr>

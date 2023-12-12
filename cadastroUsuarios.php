@@ -62,7 +62,7 @@ include("banco_de_dados/usuariosBanco.php");
                                             <label class="col-form-label col-3 label-align">CPF <span class="required">*</span></label>
                                             <div class="col-6">
                                                 <input class="form-control" type="text" data-validate-length-range="14" name="cpf" id="cpf" maxlength="14" required="required">
-                                                <span style="color:red#E74C3C;" id="msgcpf"></span>
+                                                <span style="color:#E74C3C;" id="msgcpf"></span>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
@@ -76,6 +76,7 @@ include("banco_de_dados/usuariosBanco.php");
                                             <label class="col-form-label col-3 label-align">Repita sua senha<span class="required">*</span></label>
                                             <div class="col-6">
                                                 <input class="form-control" type="password" name="password2" data-validate-linked='password' required='required' />
+                                                <span style="color:#E74C3C;" id="msgsenha"></span>
                                             </div>
                                         </div>
                                         <div class="ln_solid">
@@ -92,6 +93,23 @@ include("banco_de_dados/usuariosBanco.php");
                     </div>
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var form = document.querySelector('form');
+
+                    form.addEventListener('submit', function(event) {
+                        var password1 = document.getElementById('password1').value;
+                        var password2 = document.getElementsByName('password2')[0].value;
+
+                        if (password1 !== password2) {
+                            document.getElementById('msgsenha').innerText = 'As senhas devem ser iguais';
+                            event.preventDefault(); 
+                        }
+                    });
+                });
+            </script>
+
             <!-- /page content -->
 
         </div>
@@ -118,16 +136,16 @@ include("banco_de_dados/usuariosBanco.php");
         document.getElementById('enviar').addEventListener('click', function() {
             var cpfInput = document.getElementById('cpf');
             var msgCpf = document.getElementById('msgcpf');
-            
+
             var cpfValue = cpfInput.value.replace(/\D/g, '');
 
             if (cpfValue.length !== 11 && cpfValue.length >= 1) {
-             
+
                 msgCpf.textContent = 'CPF incompleto';
             } else {
-         
+
                 msgCpf.textContent = '';
-        
+
             }
         });
     </script>

@@ -44,15 +44,16 @@ if (isset($_GET['id']) and isset($_GET['subnome'])) {
 
         $mysqli->query("INSERT INTO sub_modalidades (id_modalidades, nome) VALUES('$id_modalidade', '$nome')") or die($mysqli->error);
 
+
 }
 
 
-if (isset($_POST["enviar_nome_modalidade"])) {
+if (isset($_POST["nome_modalidade"])) {
     echo '<script>window.location.href = window.location.href;</script>';
 
 }
 
-if (isset($_POST["enviar_nome_clinica"]) && !empty($_POST["nome_clinica"])) {
+if (!empty($_POST["nome_clinica"])) {
     echo '<script>window.location.href = window.location.href;</script>';
 }
 

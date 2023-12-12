@@ -70,7 +70,7 @@ include("banco_de_dados/modalidadesBanco.php");
                                                             <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;"></a>
                                                         </form>
                                                         <div>
-                                                            <a href="cadastroModalidades.php?id=<?php echo $modalidades['id'] ?>" class='fa fa-pencil'></a>
+                                                            <a href="editarCadastros.php?modalidade=<?php echo $modalidades['id'] ?>" class='fa fa-pencil'></a>
                                                         </div>
                                                         <div>
                                                             <a href="javascript:void(0);" id="<?php echo $modalidades['id'] ?>" onclick="encaminharId(this)" data-toggle="modal" data-target=".bs-example-modal-lg" class='fa fa-trash'></a>
@@ -139,59 +139,6 @@ include("banco_de_dados/modalidadesBanco.php");
         </div>
     </div>
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="fornecedores/validator/multifield.js"></script>
-    <script src="fornecedores/validator/validator.js"></script>
-
-    <!-- Validação -->
-    <script>
-        // initialize a validator instance from the "FormValidator" constructor.
-        // A "<form>" element is optionally passed as an argument, but is not a must
-        var validator = new FormValidator({
-            "events": ['blur', 'input', 'change']
-        }, document.forms[0]);
-        // on form "submit" event
-        document.forms[0].onsubmit = function(e) {
-            var submit = true,
-                validatorResult = validator.checkAll(this);
-            console.log(validatorResult);
-            return !!validatorResult.valid;
-        };
-        // on form "reset" event
-        document.forms[0].onreset = function(e) {
-            validator.reset();
-        };
-        // stuff related ONLY for this demo page:
-        $('.toggleValidationTooltips').change(function() {
-            validator.settings.alerts = !this.checked;
-            if (this.checked)
-                $('form .alert').remove();
-        }).prop('checked', false);
-    </script>
-
-    <script>
-        var validator = new FormValidator({
-            "events": ['blur', 'input', 'change']
-        }, document.forms[0]);
-        // on form "submit" event
-        document.forms[0].onsubmit = function(e) {
-            var submit = true,
-                validatorResult = validator.checkAll(this);
-            console.log(validatorResult);
-            return !!validatorResult.valid;
-        };
-        // on form "reset" event
-        document.forms[0].onreset = function(e) {
-            validator.reset();
-        };
-        // stuff related ONLY for this demo page:
-        $('.toggleValidationTooltips').change(function() {
-            validator.settings.alerts = !this.checked;
-            if (this.checked)
-                $('form .alert').remove();
-        }).prop('checked', false);
-    </script>
     <?php include("scripts.php"); ?>
 
 

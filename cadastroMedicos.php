@@ -76,6 +76,7 @@ include("banco_de_dados/medicosBanco.php");
                                             <label class="col-form-label col-3 label-align">Repita sua senha<span class="required">*</span></label>
                                             <div class="col-6">
                                                 <input class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
+                                                <span id="msgsenha" style="color:#E74C3C;"></span>
                                             </div>
                                         </div>
                                         <div class="ln_solid">
@@ -92,6 +93,22 @@ include("banco_de_dados/medicosBanco.php");
                     </div>
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var form = document.querySelector('form');
+
+                    form.addEventListener('submit', function(event) {
+                        var password1 = document.getElementById('password1').value;
+                        var password2 = document.getElementsByName('password2')[0].value;
+
+                        if (password1 !== password2) {
+                            document.getElementById('msgsenha').innerText = 'As senhas devem ser iguais';
+                            event.preventDefault(); 
+                        }
+                    });
+                });
+            </script>
             <!-- /page content -->
 
         </div>

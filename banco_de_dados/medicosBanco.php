@@ -14,15 +14,18 @@ if (isset($_GET['delete'])) {
     header("Location: listaMedicos.php");
 }
 
-if (isset($_POST["enviar"])) {
+if (isset($_GET["enviar"])) {
     $nome = trim($_POST['nome']);
     $email = trim($_POST['email']);
     $cpf = trim($_POST['cpf']);
     $senha = trim(md5($_POST['password']));
 
-    $mysqli->query("INSERT INTO medicos (nome, email, cpf, senha) VALUES('$nome', '$email', '$cpf', '$senha')") or die($mysqli->error);
-
-    header("Location: cadastroMedicos.php");
+    $resultado = $mysqli->query("INSERT INTO medicos (nome, email, cpf, senha) VALUES('$nome', '$email', '$cpf', '$senha')") or die($mysqli->error);
+    if ($resultado) {
+        $response = array("status" => "success", "message" => "Seu cadastro foi realizado com sucesso");
+        echo json_encode($response);
+        exit;
+    } 
 }
 
 

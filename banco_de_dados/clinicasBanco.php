@@ -5,19 +5,21 @@ include("conexao.php");
 
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
-    $sql_query = $mysqli->query("SELECT * FROM clinicas WHERE id = '$id'") or die($mysqli->error);
-    $arquivo = $sql_query->fetch_assoc();
     $mysqli->query("DELETE FROM clinicas WHERE id = '$id'") or die($mysqli->error);
+    $mysqli->query("DELETE FROM detalhes_clinica WHERE id_clinica = '$id'") or die($mysqli->error);
 
     header("Location: listaClinicas.php");
 }
 
-if (isset($_POST["enviar"])) {
+if (isset($_GET["enviar"])) {
     $nome = trim($_POST['nome']);
     $endereco = trim($_POST['endereco']);
 
-    $mysqli->query("INSERT INTO clinicas (nome, endereco) VALUES('$nome', '$endereco')") or die($mysqli->error);
+    $resultado = $mysqli->query("INSERT INTO clinicas (nome, endereco) VALUES('$nome', '$endereco')") or die($mysqli->error);
 
-    echo '<script>window.location.href = window.location.href;</script>';
+    if ($resultado) {
+        $response = array("status" => "success", "message" => "Seu cadastro foi realizado com sucesso");
+        echo json_encode($response);
+        exit;
+    } 
 }
-

@@ -49,7 +49,7 @@ include("banco_de_dados/modalidadesBanco.php");
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3 label-align">Nome<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" name="nome" required="required" />
+                                                <input class="form-control" id="nome" name="nome" required="required" />
                                             </div>
                                         </div>
                                         <div class="ln_solid">
@@ -72,6 +72,38 @@ include("banco_de_dados/modalidadesBanco.php");
     </div>
     <?php include("scripts.php"); ?>
 
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                const nome = document.getElementById('nome').value;
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'banco_de_dados/modalidadesBanco.php?enviar',
+                    data: {
+                        nome: nome,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        console.log(response.status);
+                        if (response.status === 'success') {
+                            new PNotify({
+                                title: 'Cadastro',
+                                text: response.message,
+                                type: 'success',
+                                styling: 'bootstrap3'
+                            });
+
+                            document.getElementById('nome').value = "";
+                        }
+                    },
+
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

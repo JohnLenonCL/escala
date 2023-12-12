@@ -141,6 +141,40 @@ include("banco_de_dados/modalidadesBanco.php");
 
     <?php include("scripts.php"); ?>
 
+    <style>
+        #indicador {
+            font-size: 20px;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 2;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+    </style>
+
+
+
+<!-- Alerta de DELETAR INCOMPLETO -->
+    <?php
+    if (isset($_SESSION['item_removido']) && $_SESSION['item_removido'] == true) {
+        echo '<div id="indicador" class="alert alert-danger" role="alert">Removido com sucesso!</div>';
+        $_SESSION['item_removido'] = false;
+    } else {
+        echo '<div id="indicador" class="alert alert-danger" role="alert" style="display: none;"></div>';
+    }
+    ?>
+
+    <script>
+        setTimeout(function() {
+            var alerta = document.getElementById("indicador");
+            alerta.style.opacity = "0";
+            setTimeout(function() {
+                alerta.style.display = "none";
+            }, 1000);
+        }, 3000);
+    </script>
+
 
 </body>
 

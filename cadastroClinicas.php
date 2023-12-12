@@ -46,18 +46,18 @@ include("banco_de_dados/clinicasBanco.php");
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form class="formulario" action="" method="post" data-parsley-validate>
+                                    <form class="formulario" data-parsley-validate>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3  label-align">Nome<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" name="nome" required="required" />
+                                                <input id="nome" class="form-control" name="nome" required="required" />
                                             </div>
                                         </div>
 
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3  label-align">Endereço<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" name="endereco" required="required" />
+                                                <input id="endereco" class="form-control" name="endereco" required="required" />
                                             </div>
                                         </div>
                                         <div class="ln_solid">
@@ -79,7 +79,41 @@ include("banco_de_dados/clinicasBanco.php");
     <!-- /page content -->
 
     <?php include("scripts.php"); ?>
-    
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                const nome = document.getElementById('nome').value;
+                const endereco = document.getElementById('endereco').value;
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'banco_de_dados/clinicasBanco.php?enviar',
+                    data: {
+                        nome: nome,
+                        endereco: endereco,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        console.log(response.status);
+                        if (response.status === 'success') {
+                            new PNotify({
+                                title: 'Cadastro',
+                                text: response.message,
+                                type: 'success',
+                                styling: 'bootstrap3'
+                            });
+
+                            document.getElementById('nome').value = "";
+                            document.getElementById('endereco').value = "";
+                        }
+                    },
+
+                });
+            });
+        });
+    </script>
 
 
 </body>

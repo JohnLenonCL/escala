@@ -58,7 +58,9 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2><a href="javascript:history.go(-1)">Modalidade</a></h2> <h2>/</h2> <h2>Sub-Modalidades</h2>
+                                <h2><a href="listaModalidades.php">Modalidade</a></h2>
+                                <h2>/</h2>
+                                <h2>Sub-Modalidades</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -67,7 +69,7 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                             </div>
                             <div class="x_content">
                                 <input type="text" id="input" value="<?php echo $_GET['id'] ?>" hidden="true">
-                                <div class="d-flex justify-content-end"><button class='btn btn-secondary mr-3' id="<?php echo $_GET['id'] ?>" onclick="encaminharId2(this)" data-toggle="modal" data-target=".modal2">Casdatrar sub-modalidade</button></div>
+                                <div class="d-flex justify-content-end"><button class='btn btn-secondary mr-3' id="subenviarid" data-id="<?php echo $_GET['id'] ?>" data-toggle="modal" data-target=".modal2">Casdatrar sub-modalidade</button></div>
                                 <div class="card-box table-responsive">
                                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap compact" cellspacing="0" width="100%">
 
@@ -154,7 +156,7 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="post" onsubmit="return validarFormulario()">
+                            <form id="form" onsubmit="return validarFormulario()">
                                 <div class="field item form-group">
                                     <label class="col-form-label col-3 label-align">Nome<span class="required">*</span></label>
                                     <div class="col-6">
@@ -183,7 +185,7 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                         return false;
                     } else {
                         document.getElementById('msg').textContent = '';
-                        receberId2()
+
                         return true;
                     }
                 }
@@ -191,25 +193,53 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
             <!-- /Validação -->
 
 
-            <script>
-                var cadastrar
-
-                function encaminharId2(botaoClicado) {
-                    cadastrar = botaoClicado.id
-                }
-
-                function receberId2() {
-                    var subnome = document.getElementById("subnome").value
-                    window.location.href = "detalhesModalidades.php?id=" + cadastrar + "&subnome=" + subnome
-
-                }
-            </script>
             <!-- /Modal 2 -->
 
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            var cadastrarId;
+            $('#subenviarid').click(function(event) {
+                event.preventDefault();
 
+                cadastrarId = $(this).data('id');
+
+                $('#form').submit(function(e) {
+                    e.preventDefault();
+    
+    
+                    const subnome = document.getElementById('subnome').value;
+    
+                    $.ajax({
+                        type: 'POST',
+                        url: 'banco_de_dados/modalidadesBanco.php?id=' + cadastrarId + '&subnome=' + subnome,
+                        data: {
+                            subnome: subnome,
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                new PNotify({
+                                    title: 'Cadastro',
+                                    text: response.message,
+                                    type: 'success',
+                                    styling: 'bootstrap3'
+                                });
+                                document.getElementById('subnome').value = "";
+
+                                setTimeout(function() {
+                                window.location.reload();
+                            }, 1100);
+                            }
+                        },
+                    });
+                });
+            });
+
+        });
+    </script>
 
 
 

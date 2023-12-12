@@ -45,17 +45,17 @@ include("banco_de_dados/usuariosBanco.php");
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <form class="" action="" method="post" data-parsley-validate>
+                                    <form data-parsley-validate>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3 label-align">Nome completo<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" name="nome" data-validate-length-range="6" data-validate-words="2" name="name" required="required" />
+                                                <input class="form-control" id="nome" name="nome" data-validate-length-range="6" data-validate-words="2" name="name" required="required" />
                                             </div>
                                         </div>
                                         <div class="field item form-group ">
                                             <label class="col-form-label col-3 label-align">Email<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" name="email" class='email' required="required" type="email" />
+                                                <input class="form-control" id="email" name="email" class='email' required="required" type="email" />
                                             </div>
                                         </div>
                                         <div class="field item form-group">
@@ -75,7 +75,7 @@ include("banco_de_dados/usuariosBanco.php");
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3 label-align">Repita sua senha<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" type="password" name="password2" data-validate-linked='password' required='required' />
+                                                <input class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
                                                 <span style="color:#E74C3C;" id="msgsenha"></span>
                                             </div>
                                         </div>
@@ -104,7 +104,7 @@ include("banco_de_dados/usuariosBanco.php");
 
                         if (password1 !== password2) {
                             document.getElementById('msgsenha').innerText = 'As senhas devem ser iguais';
-                            event.preventDefault(); 
+                            event.preventDefault();
                         }
                     });
                 });
@@ -149,6 +149,50 @@ include("banco_de_dados/usuariosBanco.php");
             }
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                const nome = document.getElementById('nome').value;
+                const email = document.getElementById('email').value;
+                const cpf = document.getElementById('cpf').value;
+                const password1 = document.getElementById('password1').value;
+                const password2 = document.getElementById('password2').value;
+                e.preventDefault();
+                if (password1 == password2) {
+                    const password = password1;
+                    $.ajax({
+                        type: 'POST',
+                        url: 'banco_de_dados/usuariosBanco.php?enviar',
+                        data: {
+                            nome: nome,
+                            email: email,
+                            cpf: cpf,
+                            password: password
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                new PNotify({
+                                    title: 'Cadastro',
+                                    text: response.message,
+                                    type: 'success',
+                                    styling: 'bootstrap3'
+                                });
+
+                                document.getElementById('nome').value = "";
+                                document.getElementById('email').value = "";
+                                document.getElementById('cpf').value = "";
+                                document.getElementById('password1').value = "";
+                                document.getElementById('password2').value = "";
+                            }
+                        },
+                    });
+                }
+            });
+        });
+    </script>
+
 
 </body>
 

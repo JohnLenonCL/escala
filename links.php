@@ -26,6 +26,9 @@
 <link href="vendors/animate.css/animate.css" rel="stylesheet">
 <!-- Dropzone.css -->
 <link href="vendors/dropzone/dist/dropzone.css" rel="stylesheet">
+<!-- FullCalendar -->
+<link href="vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+<link href="vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
 
 <!-- Custom Theme Style -->
 <link href="vendors/build/css/custom.css" rel="stylesheet">

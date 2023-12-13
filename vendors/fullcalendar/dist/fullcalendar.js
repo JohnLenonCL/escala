@@ -11140,14 +11140,14 @@ Calendar.defaults = {
 	// locale
 	isRTL: false,
 	buttonText: {
-		prev: "prev",
-		next: "next",
-		prevYear: "prev year",
-		nextYear: "next year",
-		year: 'year', // TODO: locale files need to specify this
-		today: 'today',
-		month: 'month',
-		week: 'week',
+		prev: "anterior",
+		next: "próximo",
+		prevYear: "ano anterior",
+		nextYear: "próximo ano",
+		year: 'ano', // TODO: locale files need to specify this
+		today: 'hoje',
+		month: 'mês',
+		week: 'semana',
 		day: 'day'
 	},
 
@@ -11158,7 +11158,7 @@ Calendar.defaults = {
 		nextYear: 'right-double-arrow'
 	},
 
-	allDayText: 'all-day',
+	allDayText: 'todo dia',
 	
 	// jquery-ui theming
 	theme: false,
@@ -11183,7 +11183,7 @@ Calendar.defaults = {
 	//eventRenderWait: null,
 
 	eventLimit: false,
-	eventLimitText: 'more',
+	eventLimitText: 'mais',
 	eventLimitClick: 'popover',
 	dayPopoverFormat: 'LL',
 	
@@ -14161,7 +14161,7 @@ fcViews.list = {
 	'class': ListView,
 	buttonTextKey: 'list', // what to lookup in locale files
 	defaults: {
-		buttonText: 'list', // text to display for English
+		buttonText: 'lista', // text to display for English
 		listDayFormat: 'LL', // like "January 1, 2016"
 		noEventsMessage: 'No events to display'
 	}

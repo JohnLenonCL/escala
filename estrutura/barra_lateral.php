@@ -1,11 +1,11 @@
 <!-- sidebar menu -->
 <div class="navbar nav_title" style="border: 0;">
-    <a href="listaClinicas.php" class="site_title d-flex justify-content-center"><span>AMMO - Escala</span></a>
+    <a href="listaClinicas.php" class="site_title d-flex justify-content-center align-items-center"> <i class="fa fa-table"> </i> AMMO - Escala </a>
 </div>
 
 <div class="clearfix"></div>
 
-<br />
+<br/>
 
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu menu_fixed">
     <div class="menu_section">
@@ -34,8 +34,16 @@
                     <li><a href="listaUsuarios.php">Lista</a></li>
                 </ul>
             </li>
+            <li><a><i class="fa fa-calendar"></i> Calendário <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <?php
+                    $clinica = $mysqli->query("SELECT * FROM clinicas");
+                    foreach ($clinica as $clinica) {?>
+                    <li><a href="calendario.php?clinica=<?php echo $clinica["id"]?>"><?php echo $clinica["nome"]?></a></li>
+                    <?php }?>
+                </ul>
+            </li>
         </ul>
     </div>
-
 </div>
 <!-- /sidebar menu -->

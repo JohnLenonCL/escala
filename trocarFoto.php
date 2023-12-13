@@ -114,7 +114,7 @@ include("banco_de_dados/imagemBanco.php");
                             });
                             setTimeout(function() {
                                 window.location.reload();
-                            }, 1500);
+                            }, 1100);
                         }
                     }
                 });

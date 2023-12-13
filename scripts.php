@@ -40,11 +40,12 @@
 <script src="vendors/dropzone/dist/dropzone.js"></script>
 <!-- Parsley.js -->
 <script src="vendors/parsleyjs/dist/parsley.js"></script>
+<!-- FullCalendar -->
+<script src="vendors/moment/min/moment.min.js"></script>
+<script src="vendors/fullcalendar/dist/fullcalendar.js"></script>
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317" integrity="sha512-euoFGowhlaLqXsPWQ48qSkBSCFs3DPRyiwVu3FjR96cMPx+Fr+gpWRhIafcHwqwCqWS42RZhIudOvEI+Ckf6MA==" data-cf-beacon='{"rayId":"82f656031da3a6d2","version":"2023.10.0","token":"cd0b4b3a733644fc843ef0b185f98241"}' crossorigin="anonymous"></script>
 
 
 <!-- Custom Theme Scripts -->
 <script src="vendors/build/js/custom.js"></script>
-
-<!-- Alteração de teste -->

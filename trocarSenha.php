@@ -116,7 +116,7 @@ include("banco_de_dados/loginBanco.php");
                             });
                             setTimeout(function() {
                                 window.location.reload();
-                            }, 1500);
+                            }, 1100);
                         }
                     }
                 });

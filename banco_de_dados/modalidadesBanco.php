@@ -12,9 +12,6 @@ if (isset($_GET['delete'])) {
     $mysqli->query("DELETE FROM sub_modalidades WHERE id_modalidades = '$id'") or die($mysqli->error);
     $mysqli->query("DELETE FROM detalhes_medico WHERE id_modalidade = '$id'") or die($mysqli->error);
 
-    $_SESSION['item_removido'] = true;
-    header("Location: listaModalidades.php"); 
-    exit;
 }
 
 if (isset($_GET["enviar"])) {

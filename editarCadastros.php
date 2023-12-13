@@ -519,20 +519,20 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                                                 <label class="col-form-label col-3 label-align">Endereço<span class="required">*</span></label>
                                                 <div class="col-6">
                                                     <input class="form-control" name="endereco" required="required" value="<?php
-                                                                                                                        $id = $_GET['clinica'];
-                                                                                                                        $sql = "SELECT endereco FROM clinicas WHERE id = $id";
+                                                                                                                            $id = $_GET['clinica'];
+                                                                                                                            $sql = "SELECT endereco FROM clinicas WHERE id = $id";
 
-                                                                                                                        $result = $mysqli->query($sql);
+                                                                                                                            $result = $mysqli->query($sql);
 
-                                                                                                                        if ($result->num_rows > 0) {
+                                                                                                                            if ($result->num_rows > 0) {
 
-                                                                                                                            $row = $result->fetch_assoc();
+                                                                                                                                $row = $result->fetch_assoc();
 
-                                                                                                                            $endereco = $row["endereco"];
+                                                                                                                                $endereco = $row["endereco"];
 
-                                                                                                                            echo "$endereco";
-                                                                                                                        }
-                                                                                                                        ?>" />
+                                                                                                                                echo "$endereco";
+                                                                                                                            }
+                                                                                                                            ?>" />
                                                 </div>
                                             </div>
                                             <div class="ln_solid">
@@ -556,6 +556,38 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
         </div>
     </div>
     <?php include("scripts.php"); ?>
+
+
+    <script>
+        $(document).ready(function() {
+            var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar');
+            if (sucessoAoRecarregar) {
+                new PNotify({
+                    title: 'Atualizar',
+                    text: 'Atualização realizada com sucesso!',
+                    type: 'success',
+                    styling: 'bootstrap3'
+                });
+
+                localStorage.removeItem('sucessoAoRecarregar');
+            }
+
+            $('form').submit(function(e) {
+                var respostaDoServidor = {
+                    success: true,
+                    message: 'Atualização realizada com sucesso!'
+                };
+
+                if (respostaDoServidor.success) {
+                    localStorage.setItem('sucessoAoRecarregar', 'true');
+                } else {
+                    console.error('Erro no envio do formulário');
+                }
+            });
+        });
+    </script>
+
+
 
 </body>
 

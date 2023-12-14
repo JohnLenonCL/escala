@@ -18,7 +18,7 @@ include("banco_de_dados/clinicasBanco.php");
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
-            <div class="col-md-3 left_col">
+            <div class="col-md-3 left_col menu_fixed">
                 <div class="left_col scroll-view">
                     <?php include("estrutura/barra_lateral.php"); ?>
                 </div>

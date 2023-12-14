@@ -1,13 +1,13 @@
 <!-- sidebar menu -->
 <div class="navbar nav_title" style="border: 0;">
-    <a href="listaClinicas.php" class="site_title d-flex justify-content-center align-items-center"> <i class="fa fa-table"> </i> AMMO - Escala </a>
+    <a href="listaClinicas.php" class="site_title d-flex justify-content-center align-items-center"> <i class="fa fa-table"></i> <span style="margin-right: 10px;"></span> <span>AMMO - Escala</span>  </a>
 </div>
 
 <div class="clearfix"></div>
 
 <br/>
 
-<div id="sidebar-menu" class="main_menu_side hidden-print main_menu menu_fixed">
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     <div class="menu_section">
         <ul class="nav side-menu">
             <li><a><i class="fa fa-home"></i> Clínicas <span class="fa fa-chevron-down"></span></a>

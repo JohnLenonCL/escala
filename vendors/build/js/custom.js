@@ -2390,8 +2390,9 @@ function init_calendar() {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay,listMonth'
+            right: 'month,agendaWeek,listMonth'
         },
+        locale: 'pt-br',
         selectable: true,
         selectHelper: true,
         select: function (start, end, allDay) {

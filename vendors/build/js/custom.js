@@ -2401,30 +2401,37 @@ function init_calendar() {
             started = start;
             ended = end;
 
-            $(".antosubmit").on("click", function () {
-                var title = $("#title").val();
+            $("#salvar").on("click", function () {
+                var start_time = $("#start_time").val();
+                var end_time = $("#end_time").val();
+                var medico = $("#medico").val();
+                var data = $("#date").val();
+
                 if (end) {
                     ended = end;
                 }
 
                 categoryClass = $("#event_type").val();
 
-                if (title) {
+                if (start_time) {
                     calendar.fullCalendar('renderEvent', {
-                        title: title,
-                        start: started,
-                        end: end,
-                        allDay: allDay
+                        title: medico,
+                        start: start_time,
+                        end: end_time,
+                        allDay: data
                     },
-                        true // make the event "stick"
+                    true // make the event "stick"
                     );
                 }
 
-                $('#title').val('');
-
+                $('#start_time').val('');
+                $('#end_time').val('');
+                $('#medico').val('');
+                
                 calendar.fullCalendar('unselect');
 
                 $('.antoclose').click();
+
 
                 return false;
             });
@@ -2445,33 +2452,33 @@ function init_calendar() {
             calendar.fullCalendar('unselect');
         },
         editable: true,
-        events: [{
-            title: 'All Day Event',
-            start: new Date(y, m, 1)
-        }, {
-            title: 'Long Event',
-            start: new Date(y, m, d - 5),
-            end: new Date(y, m, d - 2)
-        }, {
-            title: 'Meeting',
-            start: new Date(y, m, d, 10, 30),
-            allDay: false
-        }, {
-            title: 'Lunch',
-            start: new Date(y, m, d + 14, 12, 0),
-            end: new Date(y, m, d, 14, 0),
-            allDay: false
-        }, {
-            title: 'Birthday Party',
-            start: new Date(y, m, d + 1, 19, 0),
-            end: new Date(y, m, d + 1, 22, 30),
-            allDay: false
-        }, {
-            title: 'Click for Google',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            url: 'http://google.com/'
-        }]
+        // events: [{
+        //     title: 'All Day Event',
+        //     start: new Date(y, m, 1)
+        // }, {
+        //     title: 'Long Event',
+        //     start: new Date(y, m, d - 5),
+        //     end: new Date(y, m, d - 2)
+        // }, {
+        //     title: 'Meeting',
+        //     start: new Date(y, m, d, 10, 30),
+        //     allDay: false
+        // }, {
+        //     title: 'Lunch',
+        //     start: new Date(y, m, d + 14, 12, 0),
+        //     end: new Date(y, m, d, 14, 0),
+        //     allDay: false
+        // }, {
+        //     title: 'Birthday Party',
+        //     start: new Date(y, m, d + 1, 19, 0),
+        //     end: new Date(y, m, d + 1, 22, 30),
+        //     allDay: false
+        // }, {
+        //     title: 'Click for Google',
+        //     start: new Date(y, m, 28),
+        //     end: new Date(y, m, 29),
+        //     url: 'http://google.com/'
+        // }]
     });
 
 };

@@ -6315,12 +6315,12 @@ DayGrid.mixin({
 		if (seg.isStart) {
 			timeText = this.getEventTimeText(event);
 			if (timeText) {
-				timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
+				timeHtml = '<span class="fc-time" style="color:white;">' + htmlEscape(timeText) +'</span>';
 			}
 		}
 
 		titleHtml =
-			'<span class="fc-title">' +
+			'<span class="fc-title" style="color:white;">' +
 				(htmlEscape(event.title || '') || '&nbsp;') + // we always want one line of height
 			'</span>';
 		
@@ -6334,7 +6334,7 @@ DayGrid.mixin({
 					''
 					) +
 			'>' +
-				'<div class="fc-content">' +
+				'<div class="fc-content d-flex justify-content-center align-items-center flex-column">' +
 					(this.isRTL ?
 						titleHtml + ' ' + timeHtml : // put a natural space in between
 						timeHtml + ' ' + titleHtml   //
@@ -14164,7 +14164,7 @@ fcViews.list = {
 	defaults: {
 		buttonText: 'Lista', // text to display for English
 		listDayFormat: 'LL', // like "January 1, 2016"
-		noEventsMessage: 'No events to display'
+		noEventsMessage: 'Sem eventos na lista'
 	}
 };
 

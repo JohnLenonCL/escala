@@ -34,7 +34,7 @@ include("banco_de_dados/escalasBanco.php");
                 <div class="col-md-2 col-sm-2 d-flex">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Filtro</h2>
+                            <h2>Filtros</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link" style="position: relative; right: -50px"><i class="fa fa-chevron-up"></i></a>
                                 </li>
@@ -52,28 +52,62 @@ include("banco_de_dados/escalasBanco.php");
                                     $result = $mysqli->query($sql);
 
                                     if ($result->num_rows > 0) {
-
                                         foreach ($result as $detalhes_clinica) :
                                     ?>
                                             <li>
                                                 <p>
                                                     <input type="checkbox" class="flat"> <?php
-                                                                                            $id = $detalhes_clinica['id_modalidade'];
-                                                                                            $sql = "SELECT nome FROM modalidades WHERE id = $id";
+                                                                                            $id_modalidade = $detalhes_clinica['id_modalidade'];
+                                                                                            $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
 
-                                                                                            $result = $mysqli->query($sql);
+                                                                                            $result_modalidade = $mysqli->query($sql_modalidade);
 
-                                                                                            if ($result->num_rows > 0) {
+                                                                                            if ($result_modalidade->num_rows > 0) {
 
-                                                                                                $row = $result->fetch_assoc();
+                                                                                                $row_modalidade = $result_modalidade->fetch_assoc();
 
-                                                                                                $nome = $row["nome"];
+                                                                                                $nome_modalidade = $row_modalidade["nome"];
 
-                                                                                                echo "$nome";
+                                                                                                echo "$nome_modalidade";
                                                                                             }
                                                                                             ?>
                                                 </p>
                                             </li>
+
+                                            <?php
+                                            $id_modalidade = $detalhes_clinica['id_modalidade'];
+                                            $sql_submodalidades = "SELECT * FROM sub_modalidades WHERE id_modalidades = $id_modalidade";
+                                            $result_submodalidades = $mysqli->query($sql_submodalidades);
+
+                                            if ($result_submodalidades->num_rows > 0) {
+                                                foreach ($result_submodalidades as $sub_modalidades) :
+                                            ?>
+                                                    <li>
+                                                        <p>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input type="checkbox" class="flat">
+                                                            <?php
+                                                            $id_submodalidade = $sub_modalidades['id']; // Utiliza uma variável diferente para o $id
+                                                            $sql_submodalidade_nome = "SELECT nome FROM sub_modalidades WHERE id = $id_submodalidade";
+
+                                                            $result_submodalidade_nome = $mysqli->query($sql_submodalidade_nome);
+
+                                                            if ($result_submodalidade_nome->num_rows > 0) {
+
+                                                                $row_submodalidade_nome = $result_submodalidade_nome->fetch_assoc();
+
+                                                                $nome_submodalidade = $row_submodalidade_nome["nome"];
+
+                                                                echo "$nome_submodalidade";
+                                                            }
+                                                            ?>
+                                                        </p>
+                                                    </li>
+                                            <?php
+                                                endforeach;
+                                            }
+                                            ?>
+
                                     <?php
                                         endforeach;
                                     } else {
@@ -82,6 +116,7 @@ include("banco_de_dados/escalasBanco.php");
 
                                     ?>
                                 </ul>
+
                             </div>
                         </div>
                     </div>
@@ -145,7 +180,7 @@ include("banco_de_dados/escalasBanco.php");
                         <form id="antoform" class="form-horizontal calender" role="form" action="" method="POST">
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Médicos</label>
-                                <select id="heard" name="medico" class="form-control" required>
+                                <select id="medico" name="medico" class="form-control" required>
                                     <option selected disabled>Selecione...</option>
                                     <?php
                                     $clinica = $_GET['clinica'];
@@ -189,12 +224,12 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group">
                                 <div class="form-group col-md-6 col-sm-6">
                                     <label class="control-label">Início</label>
-                                    <input class="form-control time" type="time" name="start_time" required="required">
+                                    <input class="form-control time" type="time" id="start_time" name="start_time" required="required">
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-6">
                                     <label class="control-label">Fim</label>
-                                    <input class="form-control time" type="time" name="end_time" required="required">
+                                    <input class="form-control time" type="time" id="end_time" name="end_time" required="required">
                                 </div>
                             </div>
 
@@ -225,7 +260,7 @@ include("banco_de_dados/escalasBanco.php");
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-secondary antoclose" data-dismiss="modal">Fechar</button>
                                 <button type="submit" class="btn btn-success" id="salvar" name="salvar">Salvar</button>
                             </div>
                         </form>

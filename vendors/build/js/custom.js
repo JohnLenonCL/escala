@@ -2401,7 +2401,7 @@ function init_calendar() {
             started = start;
             ended = end;
 
-            $("#salvar").on("click", function () {
+            $(".salvar").on("click", function () {
                 var start_time = $("#start_time").val();
                 var end_time = $("#end_time").val();
                 var medico = $("#medico").val();

@@ -87,7 +87,7 @@ include("banco_de_dados/escalasBanco.php");
                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <input type="checkbox" class="flat">
                                                             <?php
-                                                            $id_submodalidade = $sub_modalidades['id']; // Utiliza uma variável diferente para o $id
+                                                            $id_submodalidade = $sub_modalidades['id']; 
                                                             $sql_submodalidade_nome = "SELECT nome FROM sub_modalidades WHERE id = $id_submodalidade";
 
                                                             $result_submodalidade_nome = $mysqli->query($sql_submodalidade_nome);
@@ -311,8 +311,90 @@ include("banco_de_dados/escalasBanco.php");
     <!-- /calendar modal -->
 
     <?php include("scripts.php"); ?>
+
     <script>
-        $(document).ready(function() {
+        function init_calendar() {
+            if (typeof($.fn.fullCalendar) === 'undefined') {
+                return;
+            }
+            console.log('init_calendar');
+
+            var date = new Date(),
+                d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear(),
+                started,
+                ended,
+                categoryClass;
+
+            var calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,listMonth'
+                },
+                locale: 'pt-br',
+                selectable: true,
+                selectHelper: true,
+                displayEventTime: false,
+
+                eventRender: function(event, element) {
+                    var startTimeFormatted = moment(event.start).format("HH:mm");
+                    var endTimeFormatted = moment(event.end).format("HH:mm");
+
+                    var timeRange = '<b>' + startTimeFormatted + ' - ' + endTimeFormatted + '</b>';
+
+                    element.find('.fc-title').html(timeRange + '<br>' + event.title).css('text-align', 'center');
+                },
+                select: function(start, end, allDay) {
+                    $("#date").val(moment(start).format("YYYY-MM-DD"));
+                    $('#fc_create').click();
+
+                    started = start;
+                    ended = end;
+
+                },
+                eventClick: function(calEvent, jsEvent, view) {
+                    $('#fc_edit').click();
+                    $('#title2').val(calEvent.title);
+
+                    categoryClass = $("#event_type").val();
+
+                    $(".antosubmit2").on("click", function() {
+                        calEvent.title = $("#title2").val();
+
+                        calendar.fullCalendar('updateEvent', calEvent);
+                        $('.antoclose2').click();
+                    });
+
+                    calendar.fullCalendar('unselect');
+                },
+                editable: true,
+                events: function(start, end, timezone, callback) {
+                    $.ajax({
+                        url: 'banco_de_dados/obter_escalas.php',
+                        dataType: 'json',
+                        data: {
+                            start: start.unix(),
+                            end: end.unix(),
+                            clinica: <?php echo $_GET['clinica']; ?>
+                        },
+                        success: function(response) {
+                            var events = [];
+                            response.forEach(function(evento) {
+                                events.push({
+                                    title: evento.title,
+                                    start: evento.start,
+                                    end: evento.end,
+                                    allDay: evento.allDay
+                                });
+                            });
+                            callback(events);
+                        }
+                    });
+                }
+            });
+
             var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar');
             if (sucessoAoRecarregar) {
                 new PNotify({
@@ -337,13 +419,8 @@ include("banco_de_dados/escalasBanco.php");
                     console.error('Erro no envio do formulário');
                 }
             });
-        });
+        }
     </script>
-
-
-
-
-
 
 </body>
 

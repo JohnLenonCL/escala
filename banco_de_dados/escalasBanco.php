@@ -3,7 +3,7 @@ session_abort();
 session_start();
 include("conexao.php");
 
-if (isset($_POST['salvar'])) {
+if (isset($_POST['medico'], $_POST['date'], $_POST['start_time'], $_POST['end_time'], $_POST['vigencia'], $_POST['semana'])) {
     $clinica = $_GET['clinica'];
     $medico = $_POST['medico'];
     $data = $_POST['date'];
@@ -20,6 +20,6 @@ if (isset($_POST['salvar'])) {
 
     $stmt->close();
     $mysqli->close();
-
     echo '<script>window.location.href = window.location.href;</script>';
-}
+} 
+?>

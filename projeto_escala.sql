@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10/12/2023 às 22:57
+-- Tempo de geração: 16/12/2023 às 13:22
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -38,8 +38,9 @@ CREATE TABLE `clinicas` (
 --
 
 INSERT INTO `clinicas` (`id`, `nome`, `endereco`) VALUES
-(76, 'Clinica 1', 'aidjsajdoas, asdjsajdiosa'),
-(77, 'Clinica 2', 'EndereÃ§o 1');
+(85, 'Clinica 1', 'aaaaaaaaaaaaaa'),
+(136, 'Clinica 2', 'aaaaaaaaa'),
+(139, 'Clinica 3', '123213123');
 
 -- --------------------------------------------------------
 
@@ -60,11 +61,12 @@ CREATE TABLE `detalhes_clinica` (
 --
 
 INSERT INTO `detalhes_clinica` (`id`, `id_clinica`, `id_modalidade`, `id_medico`, `verificar`) VALUES
-(8, 3, 0, 7, 1),
-(9, 5, 9, 0, 0),
-(10, 3, 9, 0, 0),
-(11, 77, 9, 0, 0),
-(12, 76, 9, 0, 0);
+(17, 85, 13, 0, 0),
+(18, 85, 0, 7, 0),
+(19, 85, 0, 38, 0),
+(20, 136, 0, 7, 0),
+(21, 85, 30, 0, 0),
+(22, 85, 32, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -78,6 +80,23 @@ CREATE TABLE `detalhes_medico` (
   `id_modalidade` int(11) NOT NULL,
   `verificar` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `escalas`
+--
+
+CREATE TABLE `escalas` (
+  `id` int(11) NOT NULL,
+  `id_clinica` int(11) NOT NULL,
+  `id_medico` int(11) NOT NULL,
+  `data_adicionada` date NOT NULL,
+  `hora_inicio` time NOT NULL,
+  `hora_fim` time NOT NULL,
+  `vigencia` varchar(255) NOT NULL,
+  `semana` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -98,7 +117,8 @@ CREATE TABLE `medicos` (
 --
 
 INSERT INTO `medicos` (`id`, `nome`, `email`, `cpf`, `senha`) VALUES
-(7, 'Medico 1', 'medico@gmail.com', '111.111.111-11', '81dc9bdb52d04dc20036dbd8313ed055');
+(7, 'Medico 1', 'medico@gmail.com', '111.111.111-11', '81dc9bdb52d04dc20036dbd8313ed055'),
+(38, 'Medico 2', 'medico2@gmail.com', '123.123.123-21', '202cb962ac59075b964b07152d234b70');
 
 -- --------------------------------------------------------
 
@@ -116,8 +136,9 @@ CREATE TABLE `modalidades` (
 --
 
 INSERT INTO `modalidades` (`id`, `nome`) VALUES
-(9, 'Modalidade 1'),
-(11, 'Modalidade 2');
+(13, 'Modalidade 1'),
+(30, 'Modalidade 2'),
+(32, 'Modalidade 3');
 
 -- --------------------------------------------------------
 
@@ -173,7 +194,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `cpf`, `senha`, `icone_nome`, `recuperar_senha`) VALUES
-(10, 'John Lenon', 'john@gmail.com', '342.342.343-43', '$2y$10$qWKedpyX/.t5NmLBrBjnx./xck8f6H50WcHlTWolPueoGK643UD26', 'imagens/657621a974c6e_Captura de tela 2023-10-16 180427.png', 'NULL');
+(10, 'John Lenon', 'john@gmail.com', '342.342.343-43', '$2y$10$K7pCo7HKuEKs21CDhsu3puuLER5V5jVmB3WICEPHsvztAF5NSJMNO', 'imagens/6579e9eea4db7_Dicas-para-comprar-um-carro-novo-como-T-Cross.jpg', 'NULL');
 
 --
 -- Índices para tabelas despejadas
@@ -195,6 +216,12 @@ ALTER TABLE `detalhes_clinica`
 -- Índices de tabela `detalhes_medico`
 --
 ALTER TABLE `detalhes_medico`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `escalas`
+--
+ALTER TABLE `escalas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -235,43 +262,49 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `clinicas`
 --
 ALTER TABLE `clinicas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT de tabela `detalhes_clinica`
 --
 ALTER TABLE `detalhes_clinica`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de tabela `detalhes_medico`
 --
 ALTER TABLE `detalhes_medico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de tabela `escalas`
+--
+ALTER TABLE `escalas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de tabela `medicos`
 --
 ALTER TABLE `medicos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de tabela `modalidades`
 --
 ALTER TABLE `modalidades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de tabela `sub_modalidades`
 --
 ALTER TABLE `sub_modalidades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

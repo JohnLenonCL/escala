@@ -181,7 +181,7 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Médicos</label>
                                 <select id="medico" name="medico" class="form-control" required>
-                                    <option selected disabled>Selecione...</option>
+                                    <option selected disabled value="">Selecione...</option>
                                     <?php
                                     $clinica = $_GET['clinica'];
 
@@ -235,8 +235,8 @@ include("banco_de_dados/escalasBanco.php");
 
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Vigência</label>
-                                <select id="heard" name="vigencia" class="form-control" required>
-                                    <option selected disabled>Selecione...</option>
+                                <select id="vigencia" name="vigencia" class="form-control" required>
+                                    <option selected disabled value="">Selecione...</option>
                                     <option value="dia">Dia</option>
                                     <option value="semana">Semana</option>
                                     <option value="mes">Mês</option>
@@ -244,11 +244,12 @@ include("banco_de_dados/escalasBanco.php");
                                     <option value="15dias">15 dias</option>
                                     <option value="15em15dias">15 em 15 dias</option>
                                 </select>
+                                <span id="msg_vigencia"></span>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
-                                <select id="heard" name="semana" class="form-control" required>
-                                    <option selected disabled>Selecione...</option>
+                                <select id="semana" name="semana" class="form-control" required>
+                                    <option selected disabled value="">Selecione...</option>
                                     <option value="segunda">Segunda</option>
                                     <option value="terca">Terça</option>
                                     <option value="quarta">Quarta</option>
@@ -257,11 +258,11 @@ include("banco_de_dados/escalasBanco.php");
                                     <option value="sabado">Sábado</option>
                                     <option value="domingo">Domingo</option>
                                 </select>
-
+                                <span id="msg_semana"></span>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary antoclose" data-dismiss="modal">Fechar</button>
-                                <button type="submit" class="btn btn-success" id="salvar" name="salvar">Salvar</button>
+                                <button type="submit" class="btn btn-success antosubmit1" id="salvar" name="salvar">Salvar</button>
                             </div>
                         </form>
                     </div>
@@ -282,33 +283,98 @@ include("banco_de_dados/escalasBanco.php");
                 <div class="modal-body">
                     <div id="testmodal2" style="padding: 5px 20px;">
                         <form id="antoform2" class="form-horizontal calender" role="form">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Data</label>
-                                <div class="col-sm-9">
-                                    <input type="date" class="form-control" id="edit_date" name="edit_date">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Hora de Início</label>
-                                <div class="col-sm-9">
-                                    <input type="time" class="form-control" id="edit_start_time" name="edit_start_time">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Hora de Término</label>
-                                <div class="col-sm-9">
-                                    <input type="time" class="form-control" id="edit_end_time" name="edit_end_time">
-                                </div>
-                            </div>
-                            <!-- Adicione outros campos conforme necessário -->
+                            <input type="text" class="form-control" id="event_id2" name="event_id2" hidden>
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label class="control-label">Médicos</label>
+                                <select id="edit_medico" name="edit_medico" class="form-control" required>
+                                    <option selected disabled value="">Selecione...</option>
+                                    <?php
+                                    $clinica = $_GET['clinica'];
 
+                                    $sql = "SELECT * FROM detalhes_clinica WHERE id_clinica = $clinica AND id_medico <> 0 AND verificar = 1";
+
+                                    $result = $mysqli->query($sql);
+
+                                    if ($result->num_rows > 0) {
+
+                                        foreach ($result as $detalhes_clinica) :
+                                    ?>
+                                            <option value="<?php echo $detalhes_clinica['id_medico'] ?>"><?php
+                                                                                                            $id = $detalhes_clinica['id_medico'];
+                                                                                                            $sql = "SELECT nome FROM medicos WHERE id = $id";
+
+                                                                                                            $result = $mysqli->query($sql);
+
+                                                                                                            if ($result->num_rows > 0) {
+
+                                                                                                                $row = $result->fetch_assoc();
+
+                                                                                                                $nome = $row["nome"];
+
+                                                                                                                echo "$nome";
+                                                                                                            }
+                                                                                                            ?></option>
+                                    <?php
+                                        endforeach;
+                                    } else {
+                                        echo "Não há dados disponíveis para esta clínica.";
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label class="control-label">Data</label>
+                                <input class="form-control" class='date' type="date" id="edit_date" name="edit_date" required='required'>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group col-md-6 col-sm-6">
+                                    <label class="control-label">Início</label>
+                                    <input class="form-control time" type="time" id="edit_start_time" name="edit_start_time" required="required">
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-6">
+                                    <label class="control-label">Fim</label>
+                                    <input class="form-control time" type="time" id="edit_end_time" name="edit_end_time" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label class="control-label">Vigência</label>
+                                <select id="edit_vigencia" name="edit_vigencia" class="form-control" required>
+                                    <option selected disabled value="">Selecione...</option>
+                                    <option value="dia">Dia</option>
+                                    <option value="semana">Semana</option>
+                                    <option value="mes">Mês</option>
+                                    <option value="ano">Ano</option>
+                                    <option value="15dias">15 dias</option>
+                                    <option value="15em15dias">15 em 15 dias</option>
+                                </select>
+                                <span id="msg_vigencia"></span>
+                            </div>
+                            <div class="form-group col-md-12 col-sm-12">
+                                <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
+                                <select id="edit_semana" name="edit_semana" class="form-control" required>
+                                    <option selected disabled value="">Selecione...</option>
+                                    <option value="segunda">Segunda</option>
+                                    <option value="terca">Terça</option>
+                                    <option value="quarta">Quarta</option>
+                                    <option value="quinta">Quinta</option>
+                                    <option value="sexta">Sexta</option>
+                                    <option value="sabado">Sábado</option>
+                                    <option value="domingo">Domingo</option>
+                                </select>
+                                <span id="msg_semana"></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" onclick="delete_escala()">Remover</button>
+                                <button type="button" class="btn btn-secondary antoclose2" data-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-success antosubmit2">Salvar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary antosubmit2">Salvar</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -318,9 +384,54 @@ include("banco_de_dados/escalasBanco.php");
     <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
     <!-- /calendar modal -->
 
+
     <?php include("scripts.php"); ?>
 
     <script>
+        function delete_escala() {
+            var remover_event_id = $('#event_id2').val();
+            alert("Deseja remover esta escala?");
+            $.ajax({
+                type: "POST",
+                url: "banco_de_dados/editar_escala.php",
+                data: {
+                    remover_event_id: remover_event_id
+                },
+                success: function(data) {
+                    if (data) {
+                        localStorage.setItem('sucessoAoRecarregar3', 'true');
+                        window.location.reload();
+                    }
+                }
+            })
+
+        }
+        $(document).ready(function() {
+            var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar2');
+            var sucessoAoRecarregar3 = localStorage.getItem('sucessoAoRecarregar3');
+            if (sucessoAoRecarregar) {
+                new PNotify({
+                    title: 'Atualizar',
+                    text: 'Atualização realizada com sucesso!',
+                    type: 'success',
+                    styling: 'bootstrap3'
+                });
+
+                localStorage.removeItem('sucessoAoRecarregar2');
+            }
+
+            if (sucessoAoRecarregar3) {
+                new PNotify({
+                    title: 'Remover',
+                    text: 'Remoção realizada com sucesso!',
+                    type: 'error',
+                    styling: 'bootstrap3'
+                });
+
+                localStorage.removeItem('sucessoAoRecarregar3');
+            }
+        });
+
         function init_calendar() {
             if (typeof($.fn.fullCalendar) === 'undefined') {
                 return;
@@ -357,6 +468,17 @@ include("banco_de_dados/escalasBanco.php");
                     element.find('.fc-title').html(timeRange + '<br>' + event.title).css('text-align', 'center');
                 },
                 select: function(start, end, allDay) {
+                    var today = new Date();
+                    if (start < today) {
+                        new PNotify({
+                            title: 'Evento',
+                            text: 'Não é possível adicionar eventos antes do dia de hoje!',
+                            type: 'alert',
+                            styling: 'bootstrap3'
+                        });
+                        return;
+                    }
+
                     $("#date").val(moment(start).format("YYYY-MM-DD"));
                     $('#fc_create').click();
 
@@ -367,6 +489,11 @@ include("banco_de_dados/escalasBanco.php");
                     clickedEvent = calEvent; // Armazenar a referência ao evento clicado
                     $('#fc_edit').click();
                     $('#title2').val(calEvent.title);
+                    $('#event_id2').val(calEvent.id);
+                    $('#edit_date').val(calEvent.start.format("YYYY-MM-DD"));
+                    $('#edit_start_time').val(calEvent.start.format("HH:mm"));
+                    $('#edit_end_time').val(calEvent.end.format("HH:mm"));
+
 
                     categoryClass = $("#event_type").val();
                 },
@@ -384,6 +511,7 @@ include("banco_de_dados/escalasBanco.php");
                             var events = [];
                             response.forEach(function(evento) {
                                 events.push({
+                                    id: evento.id,
                                     title: evento.title,
                                     start: evento.start,
                                     end: evento.end,
@@ -408,58 +536,64 @@ include("banco_de_dados/escalasBanco.php");
                 localStorage.removeItem('sucessoAoRecarregar');
             }
 
-            $('form').submit(function(e) {
-                var respostaDoServidor = {
-                    success: true,
-                    message: 'Atualização realizada com sucesso!'
-                };
+            $(".antosubmit1").on("click", function() {
+                $('form').submit(function(e) {
+                    var respostaDoServidor = {
+                        success: true,
+                        message: 'Atualização realizada com sucesso!'
+                    };
 
-                if (respostaDoServidor.success) {
-                    localStorage.setItem('sucessoAoRecarregar', 'true');
-                } else {
-                    console.error('Erro no envio do formulário');
-                }
+                    if (respostaDoServidor.success) {
+                        localStorage.setItem('sucessoAoRecarregar', 'true');
+                    } else {
+                        console.error('Erro no envio do formulário');
+                    }
+                });
             });
 
             $(".antosubmit2").on("click", function() {
-                var edit_date = $("#edit_date").val();
-                var edit_start_time = $("#edit_start_time").val();
-                var edit_end_time = $("#edit_end_time").val();
+                $('form').submit(function(e) {
+                    var edit_medico = $("#edit_medico").val();
+                    var edit_date = $("#edit_date").val();
+                    var edit_start_time = $("#edit_start_time").val();
+                    var edit_end_time = $("#edit_end_time").val();
+                    var edit_vigencia = $("#edit_vigencia").val();
+                    var edit_semana = $("#edit_semana").val();
+                    var event_id = $("#event_id2").val();
 
-                $.ajax({
-                    url: 'banco_de_dados/editar_escala.php',
-                    type: 'POST',
-                    data: {
-                        event_id: 56, //mudar o ID para o evento clicado
-                        edit_date: edit_date,
-                        edit_start_time: edit_start_time,
-                        edit_end_time: edit_end_time,
-                        // Adicione outros campos conforme necessário
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log('Resposta do servidor:', response);
+                    $.ajax({
+                        url: 'banco_de_dados/editar_escala.php',
+                        type: 'POST',
+                        data: {
+                            event_id: event_id,
+                            edit_date: edit_date,
+                            edit_start_time: edit_start_time,
+                            edit_end_time: edit_end_time,
+                            edit_vigencia: edit_vigencia,
+                            edit_semana: edit_semana,
+                            edit_medico: edit_medico
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log('Resposta do servidor:', response);
 
-                        if (response.success) {
-                            calendar.fullCalendar('updateEvent', clickedEvent);
-                            $('.antoclose2').click();
-
-                            new PNotify({
-                                title: 'Editar',
-                                text: 'Escala editada com sucesso!',
-                                type: 'success',
-                                styling: 'bootstrap3'
-                            });
-                        } else {
-                            console.error('Erro ao editar escala:', response.message);
+                            if (response.success) {
+                                calendar.fullCalendar('updateEvent', clickedEvent);
+                                $('.antoclose2').click();
+                                localStorage.setItem('sucessoAoRecarregar2', 'true');
+                                window.location.reload();
+                            } else {
+                                console.error('Erro ao editar escala:', response.message);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('Erro na requisição AJAX:', textStatus, errorThrown);
                         }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('Erro na requisição AJAX:', textStatus, errorThrown);
-                    }
-                });
+                    });
 
+                });
             });
+
         }
     </script>
 

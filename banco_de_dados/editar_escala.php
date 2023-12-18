@@ -3,15 +3,23 @@ session_abort();
 session_start();
 include("conexao.php");
 
-if (isset($_POST['event_id'], $_POST['edit_date'], $_POST['edit_start_time'], $_POST['edit_end_time'])) {
+if (isset($_POST['remover_event_id'])) {
+    $remover_event_id = $_POST['remover_event_id'];
+    $mysqli->query("DELETE FROM escalas WHERE id = $remover_event_id");
+}
+
+if (isset($_POST['event_id'], $_POST['edit_date'], $_POST['edit_start_time'], $_POST['edit_end_time'], $_POST['edit_vigencia'], $_POST['edit_semana'], $_POST['edit_medico'])) {
     $event_id = $_POST['event_id'];
     $edit_date = $_POST['edit_date'];
     $edit_start_time = $_POST['edit_start_time'];
     $edit_end_time = $_POST['edit_end_time'];
+    $edit_vigencia = $_POST['edit_vigencia'];
+    $edit_semana = $_POST['edit_semana'];
+    $edit_medico = $_POST['edit_medico'];
 
-    $stmt = $mysqli->prepare("UPDATE escalas SET data_adicionada = ?, hora_inicio = ?, hora_fim = ? WHERE id = ?");
+    $stmt = $mysqli->prepare("UPDATE escalas SET data_adicionada = ?, hora_inicio = ?, hora_fim = ?, vigencia = ?, semana = ?, id_medico = ? WHERE id = ?");
 
-    $stmt->bind_param("sssi", $edit_date, $edit_start_time, $edit_end_time, $event_id);
+    $stmt->bind_param("ssssssi", $edit_date, $edit_start_time, $edit_end_time, $edit_vigencia, $edit_semana, $edit_medico, $event_id);
 
     if ($stmt->execute()) {
         $response = array('success' => true);

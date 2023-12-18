@@ -17,7 +17,7 @@
 <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap-wysiwyg -->
-<link href="vendors/google-code-prettify/bin/prettify.css" rel="stylesheet">
+<link href="vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
 <!-- Select2 -->
 <link href="vendors/select2/dist/css/select2.min.css" rel="stylesheet">
 <!-- Switchery -->

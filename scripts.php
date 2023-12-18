@@ -44,7 +44,7 @@
 <script src="vendors/moment/min/moment.min.js"></script>
 <script src="vendors/moment/locale/pt-br.js"></script>
 <script src="vendors/moment/min/locales.js"></script>
-<script src="vendors/moment/min/moment-with-locales.js"></script>
+
 <!-- FullCalendar -->
 <script src="vendors/fullcalendar/dist/fullcalendar.js"></script>
 <script src="vendors/fullcalendar/dist/gcal.js"></script>

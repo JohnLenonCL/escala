@@ -19,6 +19,7 @@ while ($row = $result->fetch_assoc()) {
         $nome_medico = $row_medico['nome'];
 
         $events[] = [
+            'id' => $row['id'],
             'title' => $nome_medico,
             'start' => $row['data_adicionada'] . ' ' . $row['hora_inicio'],
             'end' => $row['data_adicionada'] . ' ' . $row['hora_fim'],

@@ -87,7 +87,7 @@ include("banco_de_dados/escalasBanco.php");
                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <input type="checkbox" class="flat">
                                                             <?php
-                                                            $id_submodalidade = $sub_modalidades['id']; 
+                                                            $id_submodalidade = $sub_modalidades['id'];
                                                             $sql_submodalidade_nome = "SELECT nome FROM sub_modalidades WHERE id = $id_submodalidade";
 
                                                             $result_submodalidade_nome = $mysqli->query($sql_submodalidade_nome);
@@ -270,30 +270,37 @@ include("banco_de_dados/escalasBanco.php");
             </div>
         </div>
     </div>
+    <!-- Edição da escala -->
+    <!-- Modal de Edição -->
     <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel2">Editar Escala</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-
                     <div id="testmodal2" style="padding: 5px 20px;">
                         <form id="antoform2" class="form-horizontal calender" role="form">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Title</label>
+                                <label class="col-sm-3 control-label">Data</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="title2" name="title2">
+                                    <input type="date" class="form-control" id="edit_date" name="edit_date">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Description</label>
+                                <label class="col-sm-3 control-label">Hora de Início</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+                                    <input type="time" class="form-control" id="edit_start_time" name="edit_start_time">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Hora de Término</label>
+                                <div class="col-sm-9">
+                                    <input type="time" class="form-control" id="edit_end_time" name="edit_end_time">
+                                </div>
+                            </div>
+                            <!-- Adicione outros campos conforme necessário -->
 
                         </form>
                     </div>
@@ -305,6 +312,7 @@ include("banco_de_dados/escalasBanco.php");
             </div>
         </div>
     </div>
+
 
     <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
     <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
@@ -326,6 +334,8 @@ include("banco_de_dados/escalasBanco.php");
                 started,
                 ended,
                 categoryClass;
+
+            var clickedEvent; // Variável para armazenar o evento clicado
 
             var calendar = $('#calendar').fullCalendar({
                 header: {
@@ -352,22 +362,13 @@ include("banco_de_dados/escalasBanco.php");
 
                     started = start;
                     ended = end;
-
                 },
                 eventClick: function(calEvent, jsEvent, view) {
+                    clickedEvent = calEvent; // Armazenar a referência ao evento clicado
                     $('#fc_edit').click();
                     $('#title2').val(calEvent.title);
 
                     categoryClass = $("#event_type").val();
-
-                    $(".antosubmit2").on("click", function() {
-                        calEvent.title = $("#title2").val();
-
-                        calendar.fullCalendar('updateEvent', calEvent);
-                        $('.antoclose2').click();
-                    });
-
-                    calendar.fullCalendar('unselect');
                 },
                 editable: true,
                 events: function(start, end, timezone, callback) {
@@ -419,8 +420,49 @@ include("banco_de_dados/escalasBanco.php");
                     console.error('Erro no envio do formulário');
                 }
             });
+
+            $(".antosubmit2").on("click", function() {
+                var edit_date = $("#edit_date").val();
+                var edit_start_time = $("#edit_start_time").val();
+                var edit_end_time = $("#edit_end_time").val();
+
+                $.ajax({
+                    url: 'banco_de_dados/editar_escala.php',
+                    type: 'POST',
+                    data: {
+                        event_id: 56, //mudar o ID para o evento clicado
+                        edit_date: edit_date,
+                        edit_start_time: edit_start_time,
+                        edit_end_time: edit_end_time,
+                        // Adicione outros campos conforme necessário
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Resposta do servidor:', response);
+
+                        if (response.success) {
+                            calendar.fullCalendar('updateEvent', clickedEvent);
+                            $('.antoclose2').click();
+
+                            new PNotify({
+                                title: 'Editar',
+                                text: 'Escala editada com sucesso!',
+                                type: 'success',
+                                styling: 'bootstrap3'
+                            });
+                        } else {
+                            console.error('Erro ao editar escala:', response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Erro na requisição AJAX:', textStatus, errorThrown);
+                    }
+                });
+
+            });
         }
     </script>
+
 
 </body>
 

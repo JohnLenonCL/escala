@@ -1,6 +1,8 @@
 <?php
 include("estrutura/verificar_login.php");
 include("banco_de_dados/escalasBanco.php");
+$clinica_id = $_GET['clinica'];
+$algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clinica_id'");
 ?>
 
 <!DOCTYPE html>
@@ -56,21 +58,21 @@ include("banco_de_dados/escalasBanco.php");
                                     ?>
                                             <li>
                                                 <p>
-                                                    <input type="checkbox" class="flat"> <?php
-                                                                                            $id_modalidade = $detalhes_clinica['id_modalidade'];
-                                                                                            $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
+                                                    <input type="checkbox" class="switch" data-modalidade-id="<?php echo $detalhes_clinica['id_modalidade']; ?>"> <?php
+                                                                                                                                                                    $id_modalidade = $detalhes_clinica['id_modalidade'];
+                                                                                                                                                                    $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
 
-                                                                                            $result_modalidade = $mysqli->query($sql_modalidade);
+                                                                                                                                                                    $result_modalidade = $mysqli->query($sql_modalidade);
 
-                                                                                            if ($result_modalidade->num_rows > 0) {
+                                                                                                                                                                    if ($result_modalidade->num_rows > 0) {
 
-                                                                                                $row_modalidade = $result_modalidade->fetch_assoc();
+                                                                                                                                                                        $row_modalidade = $result_modalidade->fetch_assoc();
 
-                                                                                                $nome_modalidade = $row_modalidade["nome"];
+                                                                                                                                                                        $nome_modalidade = $row_modalidade["nome"];
 
-                                                                                                echo "$nome_modalidade";
-                                                                                            }
-                                                                                            ?>
+                                                                                                                                                                        echo "$nome_modalidade";
+                                                                                                                                                                    }
+                                                                                                                                                                    ?>
                                                 </p>
                                             </li>
 
@@ -409,6 +411,8 @@ include("banco_de_dados/escalasBanco.php");
 
         }
         $(document).ready(function() {
+            var originalEvents;
+            var originalEvents2;
             var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar2');
             var sucessoAoRecarregar3 = localStorage.getItem('sucessoAoRecarregar3');
             if (sucessoAoRecarregar) {
@@ -516,6 +520,8 @@ include("banco_de_dados/escalasBanco.php");
                         },
                         success: function(response) {
                             var events = [];
+                            originalEvents2 = response;
+
                             response.forEach(function(evento) {
                                 events.push({
                                     id: evento.id,
@@ -526,6 +532,8 @@ include("banco_de_dados/escalasBanco.php");
                                 });
                             });
                             callback(events);
+                            console.log('response', originalEvents);
+                            
                         }
                     });
                 }
@@ -607,32 +615,40 @@ include("banco_de_dados/escalasBanco.php");
     <!--modalidade ID via AJAX -->
     <script>
         $(document).ready(function() {
-            $('.flat').on('change', function() {
+            $('.switch').on('change', function() {
                 var modalidadeId = $(this).data('modalidade-id');
+                var calendar = $('#calendar');
+
                 if ($(this).prop('checked')) {
-                    // Checkbox is checked, send the modalidade ID to obter_escalas.php
+                    // Fetch events for the specified modalidadeId
                     $.ajax({
                         url: 'banco_de_dados/obter_escalas.php',
                         method: 'GET',
                         data: {
-                            clinica: <?php echo $clinica; ?>,
+                            clinica: <?php echo $_GET['clinica']; ?>,
                             modalidadeId: modalidadeId
                         },
                         success: function(response) {
-                            // Handle the response, e.g., update the calendar
-                            console.log(response);
-                            // Update the calendar with the received data
-                            // ...
+                            originalEvents = response;
+                            updateCalendar(originalEvents, calendar);
+                            console.log('Response:', response);
                         },
                         error: function(error) {
                             console.error('Error:', error);
                         }
                     });
                 } else {
-                    // Checkbox is unchecked, handle accordingly if needed
-                    // ...
+                    // Use the original events when the switch is unchecked
+                    updateCalendar(originalEvents2, calendar);
+                    console.log("Original events:", originalEvents2);
                 }
             });
+
+            function updateCalendar(events, calendar) {
+                calendar.fullCalendar('removeEvents'); // Remove existing events
+                calendar.fullCalendar('addEventSource', events); // Add new events
+                console.log('Events updated:', events);
+            }
         });
     </script>
 

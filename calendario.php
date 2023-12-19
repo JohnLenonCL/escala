@@ -390,20 +390,22 @@ include("banco_de_dados/escalasBanco.php");
     <script>
         function delete_escala() {
             var remover_event_id = $('#event_id2').val();
-            alert("Deseja remover esta escala?");
-            $.ajax({
-                type: "POST",
-                url: "banco_de_dados/editar_escala.php",
-                data: {
-                    remover_event_id: remover_event_id
-                },
-                success: function(data) {
-                    if (data) {
-                        localStorage.setItem('sucessoAoRecarregar3', 'true');
-                        window.location.reload();
+            var resposta = confirm("Deseja remover o evento?");
+            if (resposta) {
+                $.ajax({
+                    type: "POST",
+                    url: "banco_de_dados/editar_escala.php",
+                    data: {
+                        remover_event_id: remover_event_id
+                    },
+                    success: function(data) {
+                        if (data) {
+                            localStorage.setItem('sucessoAoRecarregar3', 'true');
+                            window.location.reload();
+                        }
                     }
-                }
-            })
+                })
+            }
 
         }
         $(document).ready(function() {
@@ -455,6 +457,9 @@ include("banco_de_dados/escalasBanco.php");
                     right: 'month,agendaWeek,listMonth'
                 },
                 locale: 'pt-br',
+                editable: false,
+                eventStartEditable: false,
+                eventDurationEditable: false,
                 selectable: true,
                 selectHelper: true,
                 displayEventTime: false,
@@ -466,10 +471,11 @@ include("banco_de_dados/escalasBanco.php");
                     var timeRange = '<b>' + startTimeFormatted + ' - ' + endTimeFormatted + '</b>';
 
                     element.find('.fc-title').html(timeRange + '<br>' + event.title).css('text-align', 'center');
+                    element.find('.fc-content').css('cursor', 'pointer');
                 },
                 select: function(start, end, allDay) {
                     var today = new Date();
-                    if (start < today) {
+                    if (start < today.setDate(today.getDate() - 1)) {
                         new PNotify({
                             title: 'Evento',
                             text: 'Não é possível adicionar eventos antes do dia de hoje!',
@@ -485,8 +491,9 @@ include("banco_de_dados/escalasBanco.php");
                     started = start;
                     ended = end;
                 },
+
                 eventClick: function(calEvent, jsEvent, view) {
-                    clickedEvent = calEvent; // Armazenar a referência ao evento clicado
+                    clickedEvent = calEvent;
                     $('#fc_edit').click();
                     $('#title2').val(calEvent.title);
                     $('#event_id2').val(calEvent.id);
@@ -597,6 +604,37 @@ include("banco_de_dados/escalasBanco.php");
         }
     </script>
 
+    <!--modalidade ID via AJAX -->
+    <script>
+        $(document).ready(function() {
+            $('.flat').on('change', function() {
+                var modalidadeId = $(this).data('modalidade-id');
+                if ($(this).prop('checked')) {
+                    // Checkbox is checked, send the modalidade ID to obter_escalas.php
+                    $.ajax({
+                        url: 'banco_de_dados/obter_escalas.php',
+                        method: 'GET',
+                        data: {
+                            clinica: <?php echo $clinica; ?>,
+                            modalidadeId: modalidadeId
+                        },
+                        success: function(response) {
+                            // Handle the response, e.g., update the calendar
+                            console.log(response);
+                            // Update the calendar with the received data
+                            // ...
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                } else {
+                    // Checkbox is unchecked, handle accordingly if needed
+                    // ...
+                }
+            });
+        });
+    </script>
 
 </body>
 

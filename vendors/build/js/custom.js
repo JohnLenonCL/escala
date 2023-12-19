@@ -2393,7 +2393,7 @@ function init_calendar() {
             right: 'month,agendaWeek,listMonth'
         },
         locale: 'pt-br',
-        selectable: true,
+        selectable: false,
         selectHelper: true,
         select: function (start, end, allDay) {
             $('#fc_create').click();

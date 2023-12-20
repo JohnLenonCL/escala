@@ -1,8 +1,6 @@
 <?php
 include("estrutura/verificar_login.php");
 include("banco_de_dados/escalasBanco.php");
-$clinica_id = $_GET['clinica'];
-$algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clinica_id'");
 ?>
 
 <!DOCTYPE html>
@@ -221,7 +219,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Data</label>
-                                <input class="form-control" class='date' type="date" name="date" id="date" required='required'>
+                                <input class="form-control" class='date' type="date" name="date" id="date">
                             </div>
                             <div class="form-group">
                                 <div class="form-group col-md-6 col-sm-6">
@@ -327,7 +325,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Data</label>
-                                <input class="form-control" class='date' type="date" id="edit_date" name="edit_date" required='required'>
+                                <input class="form-control" class='date' type="date" id="edit_date" name="edit_date">
                             </div>
                             <div class="form-group">
                                 <div class="form-group col-md-6 col-sm-6">
@@ -410,10 +408,53 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
             }
         }
 
+        $(".antosubmit2").on("click", function() {
+            var edit_medico = $("#edit_medico").val();
+            var edit_date = $("#edit_date").val();
+            var edit_start_time = $("#edit_start_time").val();
+            var edit_end_time = $("#edit_end_time").val();
+            var edit_vigencia = $("#edit_vigencia").val();
+            var edit_semana = $("#edit_semana").val();
+            var event_id = $("#event_id2").val();
+            $('form').submit(function(e) {
+
+                $.ajax({
+                    url: 'banco_de_dados/editar_escala.php',
+                    type: 'POST',
+                    data: {
+                        event_id: event_id,
+                        edit_date: edit_date,
+                        edit_start_time: edit_start_time,
+                        edit_end_time: edit_end_time,
+                        edit_vigencia: edit_vigencia,
+                        edit_semana: edit_semana,
+                        edit_medico: edit_medico
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Resposta do servidor:', response);
+
+                        if (response.success) {
+
+                            $('.antoclose2').click();
+                            localStorage.setItem('sucessoAoRecarregar2', 'true');
+                            window.location.reload();
+                        } else {
+                            console.error('Erro ao editar escala:', response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Erro na requisição AJAX:', textStatus, errorThrown);
+                    }
+                });
+
+            });
+        });
+
         $(document).ready(function() {
             var originalEvents;
             var originalEvents2;
-            var filteredEvents; // Variável para armazenar os eventos filtrados
+            var filteredEvents;
             var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar2');
             var sucessoAoRecarregar3 = localStorage.getItem('sucessoAoRecarregar3');
 
@@ -455,7 +496,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                 ended,
                 categoryClass;
 
-            var clickedEvent; // Variável para armazenar o evento clicado
+            var clickedEvent;
 
             var calendarOptions = {
                 header: {
@@ -469,7 +510,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                 eventDurationEditable: false,
                 selectable: true,
                 selectHelper: true,
-                displayEventTime: false,
+                displayEventTime: true,
 
                 eventRender: function(event, element) {
                     var startTimeFormatted = moment(event.start).format("HH:mm");
@@ -478,8 +519,12 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                     var timeRange = '<b>' + startTimeFormatted + ' - ' + endTimeFormatted + '</b>';
 
                     element.find('.fc-title').html(timeRange + '<br>' + event.title).css('text-align', 'center');
-                    element.find('.fc-content').css({'cursor': 'pointer', 'background-color': eventColor});
+                    element.find('.fc-content').css({
+                        'cursor': 'pointer',
+                        'background-color': eventColor
+                    });
                 },
+
                 select: function(start, end, allDay) {
                     var today = new Date();
                     if (start < today.setDate(today.getDate() - 1)) {
@@ -512,36 +557,31 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                 },
                 editable: true,
                 events: function(start, end, timezone, callback) {
-                    function updateCalendar(events, calendar) {
-                        calendar.fullCalendar('removeEvents'); // Remove existing events
-                        calendar.fullCalendar('addEventSource', events); // Add new events
-                        console.log('Events updated:', events);
-                    }
+                    if ($('.switch').filter(':checked').length === 0) {
+                        $.ajax({
+                            url: 'banco_de_dados/obter_escalas.php',
+                            dataType: 'json',
+                            data: {
+                                start: start.unix(),
+                                end: end.unix(),
+                                clinica: <?php echo $_GET['clinica']; ?>
+                            },
+                            success: function(response) {
+                                originalEvents2 = response;
 
-                    $.ajax({
-                        url: 'banco_de_dados/obter_escalas.php',
-                        dataType: 'json',
-                        data: {
-                            start: start.unix(),
-                            end: end.unix(),
-                            clinica: <?php echo $_GET['clinica']; ?>
-                        },
-                        success: function(response) {
-                            originalEvents2 = response;
+                                if ($('.switch').filter(':checked').length === 0) {
+                                    filteredEvents = originalEvents2;
 
-                            if ($('.switch').filter(':checked').length === 0) {
-                                // Se nenhum switch estiver marcado, use os eventos originais
-                                filteredEvents = originalEvents2;
-                            } else {
-                                // Se switches estiverem marcados, filtre os eventos
-                                // com base nas modalidades selecionadas
-                                filteredEvents = response;
+                                }
+                                calendar.fullCalendar('removeEvents');
+                                callback(originalEvents2);
+                                console.log('response', originalEvents);
                             }
-
-                            callback(filteredEvents);
-                            console.log('response', originalEvents);
-                        }
-                    });
+                        });
+                    } else {
+                        calendar.fullCalendar('removeEvents');
+                        callback(filteredEvents);
+                    }
                 }
             };
 
@@ -579,48 +619,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
             });
         });
 
-        $(".antosubmit2").on("click", function() {
-            $('form').submit(function(e) {
-                var edit_medico = $("#edit_medico").val();
-                var edit_date = $("#edit_date").val();
-                var edit_start_time = $("#edit_start_time").val();
-                var edit_end_time = $("#edit_end_time").val();
-                var edit_vigencia = $("#edit_vigencia").val();
-                var edit_semana = $("#edit_semana").val();
-                var event_id = $("#event_id2").val();
 
-                $.ajax({
-                    url: 'banco_de_dados/editar_escala.php',
-                    type: 'POST',
-                    data: {
-                        event_id: event_id,
-                        edit_date: edit_date,
-                        edit_start_time: edit_start_time,
-                        edit_end_time: edit_end_time,
-                        edit_vigencia: edit_vigencia,
-                        edit_semana: edit_semana,
-                        edit_medico: edit_medico
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log('Resposta do servidor:', response);
-
-                        if (response.success) {
-                            calendar.fullCalendar('updateEvent', clickedEvent);
-                            $('.antoclose2').click();
-                            localStorage.setItem('sucessoAoRecarregar2', 'true');
-                            window.location.reload();
-                        } else {
-                            console.error('Erro ao editar escala:', response.message);
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('Erro na requisição AJAX:', textStatus, errorThrown);
-                    }
-                });
-
-            });
-        });
 
         // Modalidade ID via AJAX
         $(document).ready(function() {
@@ -629,7 +628,6 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                 var calendar = $('#calendar');
 
                 if ($(this).prop('checked')) {
-                    // Fetch events for the specified modalidadeId
                     $.ajax({
                         url: 'banco_de_dados/obter_escalas.php',
                         method: 'GET',
@@ -639,7 +637,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                         },
                         success: function(response) {
                             originalEvents = response;
-                            filteredEvents = response; // Atualize os eventos filtrados
+                            filteredEvents = response;
                             updateCalendar(filteredEvents, calendar);
                             console.log('Response:', response);
                         },
@@ -648,9 +646,8 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                         }
                     });
                 } else {
-                    // Use os eventos filtrados quando o switch estiver desmarcado
-                    updateCalendar(filteredEvents, calendar);
-                    console.log("Filtered events:", filteredEvents);
+                    updateCalendar(originalEvents2, calendar);
+                    console.log("Filtered events:", originalEvents2);
                 }
             });
 

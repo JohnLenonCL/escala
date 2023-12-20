@@ -77,8 +77,6 @@ if (isset($_GET["modificar"])) {
         // Se a combinação existe, obtenha o valor atual de verificar
         $existing_row = $check_query->fetch_assoc();
         $existing_verificar = $existing_row['verificar'];
-
-        // Troque o valor de verificar para o oposto
         $new_verificar = $existing_verificar == '1' ? '0' : '1';
 
         // Atualize o valor da coluna verificar

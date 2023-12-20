@@ -27,9 +27,10 @@ if (isset($_GET['medico']) and isset($_POST['atualizar'])) {
     $email_medico = trim($_POST['email']);
     $cpf_medico = trim($_POST['cpf']);
     $senha_medico = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $cor = $_POST['favcolor'];
 
-    $stmt = $mysqli->prepare("UPDATE medicos SET nome = ?, email = ?, cpf = ?, senha = ? WHERE id = ?");
-    $stmt->bind_param("ssssi", $nome_medico, $email_medico, $cpf_medico, $senha_medico, $id_medico);
+    $stmt = $mysqli->prepare("UPDATE medicos SET nome = ?, email = ?, cpf = ?, senha = ?, cor = ? WHERE id = ?");
+    $stmt->bind_param("sssssi", $nome_medico, $email_medico, $cpf_medico, $senha_medico, $cor, $id_medico);
 
     $stmt->execute();
 
@@ -250,6 +251,12 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                                                 <div class="col-6">
                                                     <input class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
                                                     <span id="msgsenha" style="color:#E74C3C;"></span>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-3 label-align">Cor<span class="required">*</span></label>
+                                                <div style="width: 80px; padding-right: 15px; padding-left: 15px;">
+                                                    <input class="form-control" type="color" id="favcolor" name="favcolor" value="#264B6D" required="required">
                                                 </div>
                                             </div>
                                             <div class="ln_solid">

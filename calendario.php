@@ -58,21 +58,21 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                                     ?>
                                             <li>
                                                 <p>
-                                                    <input type="checkbox" class="switch" data-modalidade-id="<?php echo $detalhes_clinica['id_modalidade']; ?>"> <?php
-                                                                                                                                                                    $id_modalidade = $detalhes_clinica['id_modalidade'];
-                                                                                                                                                                    $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
+                                                    <input type="checkbox" class="js-switch switch" data-modalidade-id="<?php echo $detalhes_clinica['id_modalidade']; ?>"> <?php
+                                                                                                                                                                            $id_modalidade = $detalhes_clinica['id_modalidade'];
+                                                                                                                                                                            $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
 
-                                                                                                                                                                    $result_modalidade = $mysqli->query($sql_modalidade);
+                                                                                                                                                                            $result_modalidade = $mysqli->query($sql_modalidade);
 
-                                                                                                                                                                    if ($result_modalidade->num_rows > 0) {
+                                                                                                                                                                            if ($result_modalidade->num_rows > 0) {
 
-                                                                                                                                                                        $row_modalidade = $result_modalidade->fetch_assoc();
+                                                                                                                                                                                $row_modalidade = $result_modalidade->fetch_assoc();
 
-                                                                                                                                                                        $nome_modalidade = $row_modalidade["nome"];
+                                                                                                                                                                                $nome_modalidade = $row_modalidade["nome"];
 
-                                                                                                                                                                        echo "$nome_modalidade";
-                                                                                                                                                                    }
-                                                                                                                                                                    ?>
+                                                                                                                                                                                echo "$nome_modalidade";
+                                                                                                                                                                            }
+                                                                                                                                                                            ?>
                                                 </p>
                                             </li>
 
@@ -87,7 +87,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                                                     <li>
                                                         <p>
                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input type="checkbox" class="flat">
+                                                            <input type="checkbox" class="js-switch">
                                                             <?php
                                                             $id_submodalidade = $sub_modalidades['id'];
                                                             $sql_submodalidade_nome = "SELECT nome FROM sub_modalidades WHERE id = $id_submodalidade";
@@ -408,13 +408,15 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                     }
                 })
             }
-
         }
+
         $(document).ready(function() {
             var originalEvents;
             var originalEvents2;
+            var filteredEvents; // Variável para armazenar os eventos filtrados
             var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar2');
             var sucessoAoRecarregar3 = localStorage.getItem('sucessoAoRecarregar3');
+
             if (sucessoAoRecarregar) {
                 new PNotify({
                     title: 'Atualizar',
@@ -442,6 +444,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
             if (typeof($.fn.fullCalendar) === 'undefined') {
                 return;
             }
+
             console.log('init_calendar');
 
             var date = new Date(),
@@ -454,7 +457,7 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
 
             var clickedEvent; // Variável para armazenar o evento clicado
 
-            var calendar = $('#calendar').fullCalendar({
+            var calendarOptions = {
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -471,11 +474,11 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                 eventRender: function(event, element) {
                     var startTimeFormatted = moment(event.start).format("HH:mm");
                     var endTimeFormatted = moment(event.end).format("HH:mm");
-
+                    var eventColor = event.color;
                     var timeRange = '<b>' + startTimeFormatted + ' - ' + endTimeFormatted + '</b>';
 
                     element.find('.fc-title').html(timeRange + '<br>' + event.title).css('text-align', 'center');
-                    element.find('.fc-content').css('cursor', 'pointer');
+                    element.find('.fc-content').css({'cursor': 'pointer', 'background-color': eventColor});
                 },
                 select: function(start, end, allDay) {
                     var today = new Date();
@@ -505,11 +508,16 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                     $('#edit_start_time').val(calEvent.start.format("HH:mm"));
                     $('#edit_end_time').val(calEvent.end.format("HH:mm"));
 
-
                     categoryClass = $("#event_type").val();
                 },
                 editable: true,
                 events: function(start, end, timezone, callback) {
+                    function updateCalendar(events, calendar) {
+                        calendar.fullCalendar('removeEvents'); // Remove existing events
+                        calendar.fullCalendar('addEventSource', events); // Add new events
+                        console.log('Events updated:', events);
+                    }
+
                     $.ajax({
                         url: 'banco_de_dados/obter_escalas.php',
                         dataType: 'json',
@@ -519,101 +527,102 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                             clinica: <?php echo $_GET['clinica']; ?>
                         },
                         success: function(response) {
-                            var events = [];
                             originalEvents2 = response;
 
-                            response.forEach(function(evento) {
-                                events.push({
-                                    id: evento.id,
-                                    title: evento.title,
-                                    start: evento.start,
-                                    end: evento.end,
-                                    allDay: evento.allDay
-                                });
-                            });
-                            callback(events);
+                            if ($('.switch').filter(':checked').length === 0) {
+                                // Se nenhum switch estiver marcado, use os eventos originais
+                                filteredEvents = originalEvents2;
+                            } else {
+                                // Se switches estiverem marcados, filtre os eventos
+                                // com base nas modalidades selecionadas
+                                filteredEvents = response;
+                            }
+
+                            callback(filteredEvents);
                             console.log('response', originalEvents);
-                            
                         }
                     });
                 }
-            });
+            };
 
-            var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar');
-            if (sucessoAoRecarregar) {
-                new PNotify({
-                    title: 'Salvar',
-                    text: 'Escala salva com sucesso!',
-                    type: 'success',
-                    styling: 'bootstrap3'
-                });
-
-                localStorage.removeItem('sucessoAoRecarregar');
+            if ($('.switch').filter(':checked').length === 0) {
+                calendarOptions.editable = false;
             }
 
-            $(".antosubmit1").on("click", function() {
-                $('form').submit(function(e) {
-                    var respostaDoServidor = {
-                        success: true,
-                        message: 'Atualização realizada com sucesso!'
-                    };
+            var calendar = $('#calendar').fullCalendar(calendarOptions);
+        }
 
-                    if (respostaDoServidor.success) {
-                        localStorage.setItem('sucessoAoRecarregar', 'true');
-                    } else {
-                        console.error('Erro no envio do formulário');
+        var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar');
+        if (sucessoAoRecarregar) {
+            new PNotify({
+                title: 'Salvar',
+                text: 'Escala salva com sucesso!',
+                type: 'success',
+                styling: 'bootstrap3'
+            });
+
+            localStorage.removeItem('sucessoAoRecarregar');
+        }
+
+        $(".antosubmit1").on("click", function() {
+            $('form').submit(function(e) {
+                var respostaDoServidor = {
+                    success: true,
+                    message: 'Atualização realizada com sucesso!'
+                };
+
+                if (respostaDoServidor.success) {
+                    localStorage.setItem('sucessoAoRecarregar', 'true');
+                } else {
+                    console.error('Erro no envio do formulário');
+                }
+            });
+        });
+
+        $(".antosubmit2").on("click", function() {
+            $('form').submit(function(e) {
+                var edit_medico = $("#edit_medico").val();
+                var edit_date = $("#edit_date").val();
+                var edit_start_time = $("#edit_start_time").val();
+                var edit_end_time = $("#edit_end_time").val();
+                var edit_vigencia = $("#edit_vigencia").val();
+                var edit_semana = $("#edit_semana").val();
+                var event_id = $("#event_id2").val();
+
+                $.ajax({
+                    url: 'banco_de_dados/editar_escala.php',
+                    type: 'POST',
+                    data: {
+                        event_id: event_id,
+                        edit_date: edit_date,
+                        edit_start_time: edit_start_time,
+                        edit_end_time: edit_end_time,
+                        edit_vigencia: edit_vigencia,
+                        edit_semana: edit_semana,
+                        edit_medico: edit_medico
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Resposta do servidor:', response);
+
+                        if (response.success) {
+                            calendar.fullCalendar('updateEvent', clickedEvent);
+                            $('.antoclose2').click();
+                            localStorage.setItem('sucessoAoRecarregar2', 'true');
+                            window.location.reload();
+                        } else {
+                            console.error('Erro ao editar escala:', response.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Erro na requisição AJAX:', textStatus, errorThrown);
                     }
                 });
+
             });
+        });
 
-            $(".antosubmit2").on("click", function() {
-                $('form').submit(function(e) {
-                    var edit_medico = $("#edit_medico").val();
-                    var edit_date = $("#edit_date").val();
-                    var edit_start_time = $("#edit_start_time").val();
-                    var edit_end_time = $("#edit_end_time").val();
-                    var edit_vigencia = $("#edit_vigencia").val();
-                    var edit_semana = $("#edit_semana").val();
-                    var event_id = $("#event_id2").val();
-
-                    $.ajax({
-                        url: 'banco_de_dados/editar_escala.php',
-                        type: 'POST',
-                        data: {
-                            event_id: event_id,
-                            edit_date: edit_date,
-                            edit_start_time: edit_start_time,
-                            edit_end_time: edit_end_time,
-                            edit_vigencia: edit_vigencia,
-                            edit_semana: edit_semana,
-                            edit_medico: edit_medico
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log('Resposta do servidor:', response);
-
-                            if (response.success) {
-                                calendar.fullCalendar('updateEvent', clickedEvent);
-                                $('.antoclose2').click();
-                                localStorage.setItem('sucessoAoRecarregar2', 'true');
-                                window.location.reload();
-                            } else {
-                                console.error('Erro ao editar escala:', response.message);
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error('Erro na requisição AJAX:', textStatus, errorThrown);
-                        }
-                    });
-
-                });
-            });
-
-        }
-    </script>
-
-    <!--modalidade ID via AJAX -->
-    <script>
+        // Modalidade ID via AJAX
         $(document).ready(function() {
             $('.switch').on('change', function() {
                 var modalidadeId = $(this).data('modalidade-id');
@@ -630,7 +639,8 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                         },
                         success: function(response) {
                             originalEvents = response;
-                            updateCalendar(originalEvents, calendar);
+                            filteredEvents = response; // Atualize os eventos filtrados
+                            updateCalendar(filteredEvents, calendar);
                             console.log('Response:', response);
                         },
                         error: function(error) {
@@ -638,9 +648,9 @@ $algo = $mysqli->query("SELECT * FROM detalhes_clinica WHERE id_clinica = '$clin
                         }
                     });
                 } else {
-                    // Use the original events when the switch is unchecked
-                    updateCalendar(originalEvents2, calendar);
-                    console.log("Original events:", originalEvents2);
+                    // Use os eventos filtrados quando o switch estiver desmarcado
+                    updateCalendar(filteredEvents, calendar);
+                    console.log("Filtered events:", filteredEvents);
                 }
             });
 

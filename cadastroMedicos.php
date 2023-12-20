@@ -79,6 +79,12 @@ include("banco_de_dados/medicosBanco.php");
                                                 <span id="msgsenha" style="color:#E74C3C;"></span>
                                             </div>
                                         </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-3 label-align">Cor<span class="required">*</span></label>
+                                            <div style="width: 80px; padding-right: 15px; padding-left: 15px;">
+                                                <input class="form-control" type="color" id="favcolor" name="favcolor" value="#264B6D" required="required">
+                                            </div>
+                                        </div>
                                         <div class="ln_solid">
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
@@ -155,7 +161,10 @@ include("banco_de_dados/medicosBanco.php");
                 const cpf = document.getElementById('cpf').value;
                 const password1 = document.getElementById('password1').value;
                 const password2 = document.getElementById('password2').value;
+                const cor = document.getElementById('favcolor').value;
+
                 e.preventDefault();
+
                 if (password1 == password2) {
                     const password = password1;
                     $.ajax({
@@ -165,7 +174,8 @@ include("banco_de_dados/medicosBanco.php");
                             nome: nome,
                             email: email,
                             cpf: cpf,
-                            password: password
+                            password: password,
+                            cor: cor
                         },
                         dataType: 'json',
                         success: function(response) {
@@ -183,8 +193,19 @@ include("banco_de_dados/medicosBanco.php");
                                 document.getElementById('cpf').value = "";
                                 document.getElementById('password1').value = "";
                                 document.getElementById('password2').value = "";
+                                document.getElementById('favcolor').value = "#264B6D";
+                            } else {
+                                new PNotify({
+                                    title: 'Cadastro',
+                                    text: response.message,
+                                    type: 'error',
+                                    styling: 'bootstrap3'
+                                });
                             }
                         },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('Erro na requisição AJAX:', textStatus, errorThrown);
+                        }
                     });
                 }
             });

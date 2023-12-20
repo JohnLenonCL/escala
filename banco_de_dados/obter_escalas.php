@@ -15,16 +15,18 @@ if (isset($_GET["modalidadeId"])) {
 
     while ($row = $result->fetch_assoc()) {
         $id_medico = $row['id_medico'];
-        $sql_medico = "SELECT nome FROM medicos WHERE id = $id_medico";
+        $sql_medico = "SELECT * FROM medicos WHERE id = $id_medico";
         $result_medico = $mysqli->query($sql_medico);
 
         if ($result_medico->num_rows > 0) {
             $row_medico = $result_medico->fetch_assoc();
             $nome_medico = $row_medico['nome'];
+            $cor_medico = $row_medico['cor'];
 
             $events[] = [
                 'id' => $row['id'],
                 'title' => $nome_medico,
+                'color' => $cor_medico,
                 'start' => $row['data_adicionada'] . ' ' . $row['hora_inicio'],
                 'end' => $row['data_adicionada'] . ' ' . $row['hora_fim'],
                 'allDay' => false
@@ -46,16 +48,18 @@ if (isset($_GET["modalidadeId"])) {
     $events = [];
     while ($row = $result->fetch_assoc()) {
         $id_medico = $row['id_medico'];
-        $sql_medico = "SELECT nome FROM medicos WHERE id = $id_medico";
+        $sql_medico = "SELECT * FROM medicos WHERE id = $id_medico";
         $result_medico = $mysqli->query($sql_medico);
 
         if ($result_medico->num_rows > 0) {
             $row_medico = $result_medico->fetch_assoc();
             $nome_medico = $row_medico['nome'];
+            $cor_medico = $row_medico['cor'];
 
             $events[] = [
                 'id' => $row['id'],
                 'title' => $nome_medico,
+                'color' => $cor_medico,
                 'start' => $row['data_adicionada'] . ' ' . $row['hora_inicio'],
                 'end' => $row['data_adicionada'] . ' ' . $row['hora_fim'],
                 'allDay' => false

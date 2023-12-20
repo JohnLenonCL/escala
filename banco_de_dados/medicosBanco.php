@@ -19,13 +19,19 @@ if (isset($_GET["enviar"])) {
     $email = trim($_POST['email']);
     $cpf = trim($_POST['cpf']);
     $senha = trim(md5($_POST['password']));
+    $cor = $_POST['cor'];
 
-    $resultado = $mysqli->query("INSERT INTO medicos (nome, email, cpf, senha) VALUES('$nome', '$email', '$cpf', '$senha')") or die($mysqli->error);
+    $resultado = $mysqli->query("INSERT INTO medicos (nome, email, cpf, senha, cor) VALUES ('$nome', '$email', '$cpf', '$senha', '$cor')") or die(json_encode(array("status" => "error", "message" => $mysqli->error)));
+    
     if ($resultado) {
         $response = array("status" => "success", "message" => "Seu cadastro foi realizado com sucesso");
         echo json_encode($response);
         exit;
-    } 
+    } else {
+        $response = array("status" => "error", "message" => "Erro ao inserir no banco de dados");
+        echo json_encode($response);
+        exit;
+    }
 }
 
 

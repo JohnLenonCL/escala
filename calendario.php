@@ -55,7 +55,7 @@ include("banco_de_dados/escalasBanco.php");
                                         foreach ($result as $detalhes_clinica) :
                                     ?>
                                             <li>
-                                                <p>
+                                                <p><b>
                                                     <input type="checkbox" class="js-switch switch" data-modalidade-id="<?php echo $detalhes_clinica['id_modalidade']; ?>"> <?php
                                                                                                                                                                             $id_modalidade = $detalhes_clinica['id_modalidade'];
                                                                                                                                                                             $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
@@ -71,7 +71,7 @@ include("banco_de_dados/escalasBanco.php");
                                                                                                                                                                                 echo "$nome_modalidade";
                                                                                                                                                                             }
                                                                                                                                                                             ?>
-                                                </p>
+                                                </b></p>
                                             </li>
 
                                             <?php
@@ -84,8 +84,8 @@ include("banco_de_dados/escalasBanco.php");
                                             ?>
                                                     <li>
                                                         <p>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input type="checkbox" class="js-switch">
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input type="checkbox" class="js-switch switchsub" data-submodalidade-id="<?php echo $sub_modalidades['id']; ?>">
                                                             <?php
                                                             $id_submodalidade = $sub_modalidades['id'];
                                                             $sql_submodalidade_nome = "SELECT nome FROM sub_modalidades WHERE id = $id_submodalidade";
@@ -557,7 +557,7 @@ include("banco_de_dados/escalasBanco.php");
                 },
                 editable: true,
                 events: function(start, end, timezone, callback) {
-                    if ($('.switch').filter(':checked').length === 0) {
+                    if ($('.switch').filter(':checked').length === 0 && $('.switchsub').filter(':checked').length === 0) {
                         $.ajax({
                             url: 'banco_de_dados/obter_escalas.php',
                             dataType: 'json',
@@ -569,18 +569,16 @@ include("banco_de_dados/escalasBanco.php");
                             success: function(response) {
                                 originalEvents2 = response;
 
-                                if ($('.switch').filter(':checked').length === 0) {
-                                    filteredEvents = originalEvents2;
-
-                                }
                                 calendar.fullCalendar('removeEvents');
                                 callback(originalEvents2);
-                                console.log('response', originalEvents);
+                                console.log('response', originalEvents2);
                             }
                         });
-                    } else {
+                    } 
+                    if ($('.switch').filter(':checked').length > 0 || $('.switchsub').filter(':checked').length > 0) {
                         calendar.fullCalendar('removeEvents');
                         callback(filteredEvents);
+                        
                     }
                 }
             };
@@ -650,6 +648,33 @@ include("banco_de_dados/escalasBanco.php");
                     console.log("Filtered events:", originalEvents2);
                 }
             });
+
+            $('.switchsub').on('change', function() {
+                var submodalidadeId = $(this).data('submodalidade-id');
+                var calendar = $('#calendar');
+
+                if ($(this).prop('checked')) {
+                    $.ajax({
+                        url: 'banco_de_dados/obter_escalas.php',
+                        method: 'GET',
+                        data: {
+                            clinica: <?php echo $_GET['clinica']; ?>,
+                            submodalidadeId: submodalidadeId
+                        },
+                        success: function(response) {
+                            originalEvents = response;
+                            filteredEvents = response;
+                            updateCalendar(filteredEvents, calendar);
+                            console.log('Response:', response);
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                } else {
+                    updateCalendar(originalEvents2, calendar);
+                }
+            })
 
             function updateCalendar(events, calendar) {
                 calendar.fullCalendar('removeEvents'); // Remove existing events

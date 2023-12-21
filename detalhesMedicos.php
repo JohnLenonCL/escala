@@ -45,20 +45,20 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                 <div class="page-title">
                     <div class="title_left">
                         <h3>Detalhes do médico "<?php
-                                                    $id = $_GET['id'];
-                                                    $sql = "SELECT nome FROM medicos WHERE id = $id";
+                                                $id = $_GET['id'];
+                                                $sql = "SELECT nome FROM medicos WHERE id = $id";
 
-                                                    $result = $mysqli->query($sql);
+                                                $result = $mysqli->query($sql);
 
-                                                    if ($result->num_rows > 0) {
+                                                if ($result->num_rows > 0) {
 
-                                                        $row = $result->fetch_assoc();
+                                                    $row = $result->fetch_assoc();
 
-                                                        $nome = $row["nome"];
+                                                    $nome = $row["nome"];
 
-                                                        echo "$nome";
-                                                    }
-                                                    ?>"</h3>
+                                                    echo "$nome";
+                                                }
+                                                ?>"</h3>
 
                     </div>
                 </div>
@@ -68,7 +68,9 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2><a href="javascript:history.go(-1)">Médicos</a></h2><h2>/</h2><h2>Modalidades</h2>
+                                <h2><a href="javascript:history.go(-1)">Médicos</a></h2>
+                                <h2>/</h2>
+                                <h2>Modalidades e Sub-modalidades</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -83,7 +85,8 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                         <thead>
                                             <tr>
                                                 <th style="width: 0px;">#</th>
-                                                <th>Nome</th>
+                                                <th>Modalidades</th>
+                                                <th>Sub-modalidades</th>
                                                 <th style="width: 0px;">Ativo</th>
                                                 <th style="width: 0px;">Detalhes</th>
                                             </tr>
@@ -91,28 +94,57 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                         <tbody>
                                             <?php
                                             $i = 0;
-                                            $modalidades = $mysqli->query("SELECT * FROM modalidades");
-                                            foreach ($modalidades as $modalidades) :
+                                            $sub_modalidades = $mysqli->query("SELECT * FROM sub_modalidades");
+                                            foreach ($sub_modalidades as $sub_modalidades) :
 
                                             ?>
                                                 <tr>
                                                     <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
-                                                    <td class="align-middle"> <?php echo $modalidades['nome']; ?></td>
+                                                    <td class="align-middle"><?php
+                                                                                $id = $sub_modalidades['id_modalidades'];
+                                                                                $sql = "SELECT nome FROM modalidades WHERE id = $id";
+
+                                                                                $result = $mysqli->query($sql);
+
+                                                                                if ($result->num_rows > 0) {
+
+                                                                                    $row = $result->fetch_assoc();
+
+                                                                                    $nome = $row["nome"];
+
+                                                                                    echo "$nome";
+                                                                                }
+                                                                                ?></td>
+                                                    <td class="align-middle"><?php echo $sub_modalidades['nome']; ?></td>
                                                     <td class="align-middle">
-                                                        <input id="switch" data-id="<?php echo $modalidades['id'] ?>" type="checkbox" class="js-switch" <?php
-                                                                                                                                                        foreach ($algo as $item) :
+                                                        <input id="switch" data-modalidade="<?php echo $sub_modalidades['id_modalidades'] ?>" data-id="<?php echo $sub_modalidades['id'] ?>" type="checkbox" class="js-switch" <?php
+                                                                                                                                                            foreach ($algo as $item) :
 
-                                                                                                                                                            if ($item['id_modalidade'] == $modalidades['id']) {
-                                                                                                                                                                echo $item['verificar'] ? "checked" : '';
-                                                                                                                                                            }
+                                                                                                                                                                if ($item['id_sub'] == $sub_modalidades['id']) {
+                                                                                                                                                                    echo $item['verificar'] ? "checked" : '';
+                                                                                                                                                                }
 
-                                                                                                                                                        endforeach;
-                                                                                                                                                        ?> />
+                                                                                                                                                            endforeach;
+                                                                                                                                                            ?> />
                                                     </td>
                                                     <td class="align-middle d-flex justify-content-center">
-                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $modalidades['id'] ?>" method="post">
-                                                            <input type="text" name="nome_modalidade" value="<?php echo $modalidades['nome']; ?>" hidden="true">
-                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $modalidades['id'] ?>"></a>
+                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $sub_modalidades['id_modalidades'] ?>" method="post">
+                                                            <input type="text" name="nome_modalidade" value="<?php
+                                                                                                                $id = $sub_modalidades['id_modalidades'];
+                                                                                                                $sql = "SELECT nome FROM modalidades WHERE id = $id";
+
+                                                                                                                $result = $mysqli->query($sql);
+
+                                                                                                                if ($result->num_rows > 0) {
+
+                                                                                                                    $row = $result->fetch_assoc();
+
+                                                                                                                    $nome = $row["nome"];
+
+                                                                                                                    echo "$nome";
+                                                                                                                }
+                                                                                                                ?>" hidden="true">
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $sub_modalidades['id_modalidades'] ?>"></a>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -145,28 +177,45 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                 $(document).on('change', '#switch', function() {
                     const lido = this.checked ? 1 : 0;
                     const medico = <?php echo $_GET['id'] ?>;
-                    const modalidade = this.dataset.id;
+                    const sub_modalidade = this.dataset.id;
+                    const modalidade = this.dataset.modalidade;
                     if (this.checked == 1) {
+                        console.log(lido);
+                        console.log(medico);
+                        console.log(sub_modalidade);
+                        console.log(modalidade);
                         $.ajax({
                             type: "POST",
                             url: "banco_de_dados/medicosBanco.php?salvar-modalidade-medico",
                             data: {
                                 id_medico: medico,
-                                id_modalidade: modalidade
+                                id_modalidade: modalidade,
+                                id_submodalidade: sub_modalidade
                             },
-                            dataType: "JSON"
+                            dataType: "JSON",
+                            success: function(data) {
+                                console.log(data);
+                            }
                         });
                     }
 
                     if (this.checked == 0) {
+                        console.log(lido);
+                        console.log(medico);
+                        console.log(sub_modalidade);
+                        console.log(modalidade);
                         $.ajax({
                             type: "POST",
                             url: "banco_de_dados/medicosBanco.php?modificar-modalidade-medico",
                             data: {
                                 id_medico: medico,
-                                id_modalidade: modalidade
+                                id_modalidade: modalidade,
+                                id_submodalidade: sub_modalidade
                             },
-                            dataType: "JSON"
+                            dataType: "JSON",
+                            success: function(data) {
+                                console.log(data);
+                            }
                         });
                     }
                 });

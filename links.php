@@ -29,6 +29,8 @@
 <!-- FullCalendar -->
 <link href="vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
 <link href="vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+<!-- favicon -->
+<link rel="icon" href="imagens/favicon.ico" type="image/ico" />
 
 <!-- Custom Theme Style -->
 <link href="vendors/build/css/custom.css" rel="stylesheet">

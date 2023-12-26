@@ -56,22 +56,22 @@ include("banco_de_dados/escalasBanco.php");
                                     ?>
                                             <li>
                                                 <p><b>
-                                                    <input type="checkbox" class="js-switch switch" data-modalidade-id="<?php echo $detalhes_clinica['id_modalidade']; ?>"> <?php
-                                                                                                                                                                            $id_modalidade = $detalhes_clinica['id_modalidade'];
-                                                                                                                                                                            $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
+                                                        <input type="checkbox" class="js-switch switch" data-modalidade-id="<?php echo $detalhes_clinica['id_modalidade']; ?>"> <?php
+                                                                                                                                                                                $id_modalidade = $detalhes_clinica['id_modalidade'];
+                                                                                                                                                                                $sql_modalidade = "SELECT nome FROM modalidades WHERE id = $id_modalidade";
 
-                                                                                                                                                                            $result_modalidade = $mysqli->query($sql_modalidade);
+                                                                                                                                                                                $result_modalidade = $mysqli->query($sql_modalidade);
 
-                                                                                                                                                                            if ($result_modalidade->num_rows > 0) {
+                                                                                                                                                                                if ($result_modalidade->num_rows > 0) {
 
-                                                                                                                                                                                $row_modalidade = $result_modalidade->fetch_assoc();
+                                                                                                                                                                                    $row_modalidade = $result_modalidade->fetch_assoc();
 
-                                                                                                                                                                                $nome_modalidade = $row_modalidade["nome"];
+                                                                                                                                                                                    $nome_modalidade = $row_modalidade["nome"];
 
-                                                                                                                                                                                echo "$nome_modalidade";
-                                                                                                                                                                            }
-                                                                                                                                                                            ?>
-                                                </b></p>
+                                                                                                                                                                                    echo "$nome_modalidade";
+                                                                                                                                                                                }
+                                                                                                                                                                                ?>
+                                                    </b></p>
                                             </li>
 
                                             <?php
@@ -219,7 +219,8 @@ include("banco_de_dados/escalasBanco.php");
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Data</label>
-                                <input class="form-control" class='date' type="date" name="date" id="date">
+                                <input class="form-control date" type="date" name="date" id="date" readonly>
+
                             </div>
                             <div class="form-group">
                                 <div class="form-group col-md-6 col-sm-6">
@@ -325,7 +326,7 @@ include("banco_de_dados/escalasBanco.php");
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Data</label>
-                                <input class="form-control" class='date' type="date" id="edit_date" name="edit_date">
+                                <input class="form-control" class='date' type="date" id="edit_date" name="edit_date" readonly>
                             </div>
                             <div class="form-group">
                                 <div class="form-group col-md-6 col-sm-6">
@@ -387,7 +388,8 @@ include("banco_de_dados/escalasBanco.php");
 
     <?php include("scripts.php"); ?>
 
-    <script>
+
+<script>
         function delete_escala() {
             var remover_event_id = $('#event_id2').val();
             var resposta = confirm("Deseja remover o evento?");
@@ -455,6 +457,7 @@ include("banco_de_dados/escalasBanco.php");
             var originalEvents;
             var originalEvents2;
             var filteredEvents;
+            var manter;
             var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar2');
             var sucessoAoRecarregar3 = localStorage.getItem('sucessoAoRecarregar3');
 
@@ -568,17 +571,17 @@ include("banco_de_dados/escalasBanco.php");
                             },
                             success: function(response) {
                                 originalEvents2 = response;
-
                                 calendar.fullCalendar('removeEvents');
-                                callback(originalEvents2);
-                                console.log('response', originalEvents2);
+                                callback(response);
+                                console.log('response', response);
                             }
                         });
-                    } 
+                    }
                     if ($('.switch').filter(':checked').length > 0 || $('.switchsub').filter(':checked').length > 0) {
+
                         calendar.fullCalendar('removeEvents');
-                        callback(filteredEvents);
-                        
+                        callback(manter);
+
                     }
                 }
             };
@@ -618,69 +621,64 @@ include("banco_de_dados/escalasBanco.php");
         });
 
 
-
-        // Modalidade ID via AJAX
         $(document).ready(function() {
-            $('.switch').on('change', function() {
+            var switchEventMap = {};
+            var contador = 0;
+            
+
+            $('.switch, .switchsub').on('change', function() {
                 var modalidadeId = $(this).data('modalidade-id');
-                var calendar = $('#calendar');
-
-                if ($(this).prop('checked')) {
-                    $.ajax({
-                        url: 'banco_de_dados/obter_escalas.php',
-                        method: 'GET',
-                        data: {
-                            clinica: <?php echo $_GET['clinica']; ?>,
-                            modalidadeId: modalidadeId
-                        },
-                        success: function(response) {
-                            originalEvents = response;
-                            filteredEvents = response;
-                            updateCalendar(filteredEvents, calendar);
-                            console.log('Response:', response);
-                        },
-                        error: function(error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                } else {
-                    updateCalendar(originalEvents2, calendar);
-                    console.log("Filtered events:", originalEvents2);
-                }
-            });
-
-            $('.switchsub').on('change', function() {
                 var submodalidadeId = $(this).data('submodalidade-id');
-                var calendar = $('#calendar');
-
+                var key = modalidadeId + '_' + submodalidadeId;
                 if ($(this).prop('checked')) {
                     $.ajax({
                         url: 'banco_de_dados/obter_escalas.php',
                         method: 'GET',
                         data: {
                             clinica: <?php echo $_GET['clinica']; ?>,
+                            modalidadeId: modalidadeId,
                             submodalidadeId: submodalidadeId
                         },
                         success: function(response) {
-                            originalEvents = response;
-                            filteredEvents = response;
-                            updateCalendar(filteredEvents, calendar);
-                            console.log('Response:', response);
+                            contador++;
+                            switchEventMap[key] = response;
+                            updateCalendar(mergeEvents(), $('#calendar'));
                         },
-                        error: function(error) {
-                            console.error('Error:', error);
-                        }
+
                     });
                 } else {
-                    updateCalendar(originalEvents2, calendar);
+                    contador--;
+                    delete switchEventMap[key];
+                    updateCalendar(mergeEvents(), $('#calendar'));
+
+                    if (contador === 0) {
+                        $('#calendar').fullCalendar('removeEvents');
+                        $('#calendar').fullCalendar('addEventSource', originalEvents2);
+                        
+                    }
+                    
                 }
-            })
+            });
+
+
+            function mergeEvents() {
+                var allEvents = [];
+                for (var key in switchEventMap) {
+                    allEvents = allEvents.concat(switchEventMap[key]);
+                }
+                manter = allEvents.filter((event, index, self) => index === self.findIndex((t) => (
+                    t.id === event.id &&
+                    t.modalidadeId === event.modalidadeId &&
+                    t.submodalidadeId === event.submodalidadeId
+                )));
+                return manter;
+            }
 
             function updateCalendar(events, calendar) {
-                calendar.fullCalendar('removeEvents'); // Remove existing events
-                calendar.fullCalendar('addEventSource', events); // Add new events
-                console.log('Events updated:', events);
+                calendar.fullCalendar('removeEvents');
+                calendar.fullCalendar('addEventSource', events);
             }
+
         });
     </script>
 

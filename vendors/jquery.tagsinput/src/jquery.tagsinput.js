@@ -188,7 +188,7 @@
       removeWithBackspace:true,
       placeholderColor:'#666666',
       autosize: true,
-      comfortZone: 20,
+      comfortZone: 10,
       inputPadding: 6*2
     },options);
 

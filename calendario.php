@@ -251,14 +251,15 @@ include("banco_de_dados/escalasBanco.php");
                                 <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
                                 <select id="semana" name="semana" class="form-control" required>
                                     <option selected disabled value="">Selecione...</option>
-                                    <option value="segunda">Segunda</option>
-                                    <option value="terca">Terça</option>
-                                    <option value="quarta">Quarta</option>
-                                    <option value="quinta">Quinta</option>
-                                    <option value="sexta">Sexta</option>
-                                    <option value="sabado">Sábado</option>
-                                    <option value="domingo">Domingo</option>
+                                    <option value="Monday">Segunda</option>
+                                    <option value="Tuesday">Terça</option>
+                                    <option value="Wednesday">Quarta</option>
+                                    <option value="Thursday">Quinta</option>
+                                    <option value="Friday">Sexta</option>
+                                    <option value="Saturday">Sábado</option>
+                                    <option value="Sunday">Domingo</option>
                                 </select>
+                                <input name="tags_1" id="tags_1" type="text" class="tags form-control"/>
                                 <span id="msg_semana"></span>
                             </div>
                             <div class="modal-footer">
@@ -357,13 +358,13 @@ include("banco_de_dados/escalasBanco.php");
                                 <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
                                 <select id="edit_semana" name="edit_semana" class="form-control" required>
                                     <option selected disabled value="">Selecione...</option>
-                                    <option value="segunda">Segunda</option>
-                                    <option value="terca">Terça</option>
-                                    <option value="quarta">Quarta</option>
-                                    <option value="quinta">Quinta</option>
-                                    <option value="sexta">Sexta</option>
-                                    <option value="sabado">Sábado</option>
-                                    <option value="domingo">Domingo</option>
+                                    <option value="Monday">Segunda</option>
+                                    <option value="Tuesday">Terça</option>
+                                    <option value="Wednesday">Quarta</option>
+                                    <option value="Thursday">Quinta</option>
+                                    <option value="Friday">Sexta</option>
+                                    <option value="Saturday">Sábado</option>
+                                    <option value="Sunday">Domingo</option>
                                 </select>
                                 <span id="msg_semana"></span>
                             </div>
@@ -624,7 +625,30 @@ include("banco_de_dados/escalasBanco.php");
         $(document).ready(function() {
             var switchEventMap = {};
             var contador = 0;
-            
+
+            $('#vigencia').on('change', function() {
+                if ($(this).val() === 'dia') {
+                    document.getElementById('semana').disabled = true;
+                }
+                else {
+                    document.getElementById('semana').disabled = false;
+                }
+            });
+            $('#edit_vigencia').on('change', function() {
+                if ($(this).val() === 'dia') {
+                    document.getElementById('edit_semana').disabled = true;
+                    document.getElementById('tags_1').disabled = true;
+                }
+                else {
+                    document.getElementById('edit_semana').disabled = false;
+                }
+            });
+
+
+            $('#semana').on('change', function() {
+                    document.getElementById('tags_1').value += $(this).val()+",";
+                    console.log('tags_1', document.getElementById('tags_1').value);
+            });
 
             $('.switch, .switchsub').on('change', function() {
                 var modalidadeId = $(this).data('modalidade-id');

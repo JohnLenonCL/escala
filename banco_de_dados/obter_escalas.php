@@ -37,10 +37,7 @@ if (isset($_GET["modalidadeId"])) {
 
     header('Content-Type: application/json');
     echo json_encode($events);
-}
-
-
-else if (isset($_GET["submodalidadeId"])) {
+} else if (isset($_GET["submodalidadeId"])) {
     $clinica = $_GET['clinica'];
     $modalidade = $_GET['submodalidadeId'];
 
@@ -105,6 +102,39 @@ else if (isset($_GET["submodalidadeId"])) {
                 'end' => $row['data_adicionada'] . ' ' . $row['hora_fim'],
                 'allDay' => false
             ];
+        }
+    }
+
+    $sql_vigencia = "SELECT * FROM escalas WHERE id_clinica = $clinica AND vigencia = 'ano'";
+    $result_vigencia = $mysqli->query($sql_vigencia);
+
+    while ($row = $result_vigencia->fetch_assoc()) {
+        $id_medico = $row['id_medico'];
+        $sql_medico = "SELECT * FROM medicos WHERE id = $id_medico";
+        $result_medico = $mysqli->query($sql_medico);
+
+        if ($result_medico->num_rows > 0) {
+            $startRecur = new DateTime($row['data_adicionada']);
+            $endRecur = clone $startRecur;
+            $endRecur->modify('+1 year');
+            $intervalo = new DateInterval('P1M');
+            $periodo = new DatePeriod($startRecur, $intervalo, $endRecur);
+            $row_medico = $result_medico->fetch_assoc();
+            $nome_medico = $row_medico['nome'];
+            $cor_medico = $row_medico['cor'];
+
+            foreach ($periodo as $data) {
+
+                $evento = [
+                    'id' => $row['id'],
+                    'title' => $nome_medico,
+                    'color' => $cor_medico,
+                    'start' => $data->format('Y-m-d') . ' ' . $row['hora_inicio'],
+                    'end' => $data->format('Y-m-d') . ' ' . $row['hora_fim'],
+                    'allDay' => false
+                ];
+                $events[] = $evento;
+            }
         }
     }
 

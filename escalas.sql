@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26/12/2023 às 21:33
+-- Tempo de geração: 03/01/2024 às 15:12
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -43,10 +43,8 @@ CREATE TABLE `escalas` (
 --
 
 INSERT INTO `escalas` (`id`, `id_clinica`, `id_medico`, `data_adicionada`, `hora_inicio`, `hora_fim`, `vigencia`, `semana`) VALUES
-(76, 85, 38, '2024-01-16', '17:08:00', '17:09:00', 'semana', 'terca'),
-(77, 85, 7, '2024-01-18', '17:23:00', '20:23:00', 'semana', 'segunda'),
-(82, 136, 38, '2024-01-17', '17:09:00', '17:12:00', 'ano', 'quinta'),
-(83, 136, 7, '2024-01-25', '17:09:00', '17:12:00', 'semana', 'quinta');
+(91, 85, 7, '2024-01-23', '10:00:00', '10:04:00', 'dia', 'segunda'),
+(93, 85, 38, '2024-01-17', '11:07:00', '11:08:00', 'ano', 'segunda');
 
 --
 -- Índices para tabelas despejadas
@@ -66,7 +64,7 @@ ALTER TABLE `escalas`
 -- AUTO_INCREMENT de tabela `escalas`
 --
 ALTER TABLE `escalas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

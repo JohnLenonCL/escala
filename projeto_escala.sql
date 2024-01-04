@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 03-Jan-2024 às 22:02
--- Versão do servidor: 10.4.24-MariaDB
--- versão do PHP: 7.4.29
+-- Tempo de geração: 04/01/2024 às 15:22
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,17 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `clinicas`
+-- Estrutura para tabela `clinicas`
 --
 
 CREATE TABLE `clinicas` (
   `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `endereco` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `clinicas`
+-- Despejando dados para a tabela `clinicas`
 --
 
 INSERT INTO `clinicas` (`id`, `nome`, `endereco`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `clinicas` (`id`, `nome`, `endereco`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `detalhes_clinica`
+-- Estrutura para tabela `detalhes_clinica`
 --
 
 CREATE TABLE `detalhes_clinica` (
@@ -54,16 +54,16 @@ CREATE TABLE `detalhes_clinica` (
   `id_modalidade` int(11) NOT NULL,
   `id_medico` int(11) NOT NULL,
   `verificar` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `detalhes_clinica`
+-- Despejando dados para a tabela `detalhes_clinica`
 --
 
 INSERT INTO `detalhes_clinica` (`id`, `id_clinica`, `id_modalidade`, `id_medico`, `verificar`) VALUES
 (26, 85, 13, 0, 1),
 (27, 85, 30, 0, 1),
-(28, 85, 32, 0, 1),
+(28, 85, 32, 0, 0),
 (29, 85, 0, 7, 1),
 (30, 85, 0, 38, 1),
 (31, 85, 0, 55, 1),
@@ -72,7 +72,7 @@ INSERT INTO `detalhes_clinica` (`id`, `id_clinica`, `id_modalidade`, `id_medico`
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `detalhes_medico`
+-- Estrutura para tabela `detalhes_medico`
 --
 
 CREATE TABLE `detalhes_medico` (
@@ -81,10 +81,10 @@ CREATE TABLE `detalhes_medico` (
   `id_modalidade` int(11) NOT NULL,
   `id_sub` int(11) NOT NULL,
   `verificar` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `detalhes_medico`
+-- Despejando dados para a tabela `detalhes_medico`
 --
 
 INSERT INTO `detalhes_medico` (`id`, `id_medico`, `id_modalidade`, `id_sub`, `verificar`) VALUES
@@ -97,7 +97,7 @@ INSERT INTO `detalhes_medico` (`id`, `id_medico`, `id_modalidade`, `id_sub`, `ve
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `escalas`
+-- Estrutura para tabela `escalas`
 --
 
 CREATE TABLE `escalas` (
@@ -109,20 +109,20 @@ CREATE TABLE `escalas` (
   `hora_fim` time NOT NULL,
   `vigencia` varchar(255) NOT NULL,
   `semana` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Extraindo dados da tabela `escalas`
+-- Despejando dados para a tabela `escalas`
 --
 
 INSERT INTO `escalas` (`id`, `id_clinica`, `id_medico`, `data_adicionada`, `hora_inicio`, `hora_fim`, `vigencia`, `semana`) VALUES
-(76, 85, 38, '2024-01-16', '17:08:00', '17:10:00', 'dia', 'segunda'),
+(76, 85, 38, '2024-01-16', '17:08:00', '18:10:00', 'dia', ''),
 (77, 85, 7, '2024-01-18', '17:23:00', '20:23:00', 'semana', 'segunda');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `medicos`
+-- Estrutura para tabela `medicos`
 --
 
 CREATE TABLE `medicos` (
@@ -132,10 +132,10 @@ CREATE TABLE `medicos` (
   `cpf` varchar(14) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `cor` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `medicos`
+-- Despejando dados para a tabela `medicos`
 --
 
 INSERT INTO `medicos` (`id`, `nome`, `email`, `cpf`, `senha`, `cor`) VALUES
@@ -147,16 +147,16 @@ INSERT INTO `medicos` (`id`, `nome`, `email`, `cpf`, `senha`, `cor`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `modalidades`
+-- Estrutura para tabela `modalidades`
 --
 
 CREATE TABLE `modalidades` (
   `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `modalidades`
+-- Despejando dados para a tabela `modalidades`
 --
 
 INSERT INTO `modalidades` (`id`, `nome`) VALUES
@@ -167,16 +167,16 @@ INSERT INTO `modalidades` (`id`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `recuperacao`
+-- Estrutura para tabela `recuperacao`
 --
 
 CREATE TABLE `recuperacao` (
   `utilizador` varchar(255) NOT NULL,
   `confirmacao` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Extraindo dados da tabela `recuperacao`
+-- Despejando dados para a tabela `recuperacao`
 --
 
 INSERT INTO `recuperacao` (`utilizador`, `confirmacao`) VALUES
@@ -188,17 +188,17 @@ INSERT INTO `recuperacao` (`utilizador`, `confirmacao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `sub_modalidades`
+-- Estrutura para tabela `sub_modalidades`
 --
 
 CREATE TABLE `sub_modalidades` (
   `id` int(11) NOT NULL,
   `id_modalidades` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `sub_modalidades`
+-- Despejando dados para a tabela `sub_modalidades`
 --
 
 INSERT INTO `sub_modalidades` (`id`, `id_modalidades`, `nome`) VALUES
@@ -209,7 +209,7 @@ INSERT INTO `sub_modalidades` (`id`, `id_modalidades`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `usuarios`
+-- Estrutura para tabela `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -220,10 +220,10 @@ CREATE TABLE `usuarios` (
   `senha` varchar(255) NOT NULL,
   `icone_nome` varchar(255) NOT NULL,
   `recuperar_senha` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `usuarios`
+-- Despejando dados para a tabela `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `cpf`, `senha`, `icone_nome`, `recuperar_senha`) VALUES
@@ -234,61 +234,61 @@ INSERT INTO `usuarios` (`id`, `nome`, `email`, `cpf`, `senha`, `icone_nome`, `re
 --
 
 --
--- Índices para tabela `clinicas`
+-- Índices de tabela `clinicas`
 --
 ALTER TABLE `clinicas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `detalhes_clinica`
+-- Índices de tabela `detalhes_clinica`
 --
 ALTER TABLE `detalhes_clinica`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `detalhes_medico`
+-- Índices de tabela `detalhes_medico`
 --
 ALTER TABLE `detalhes_medico`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `escalas`
+-- Índices de tabela `escalas`
 --
 ALTER TABLE `escalas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `medicos`
+-- Índices de tabela `medicos`
 --
 ALTER TABLE `medicos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `modalidades`
+-- Índices de tabela `modalidades`
 --
 ALTER TABLE `modalidades`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `recuperacao`
+-- Índices de tabela `recuperacao`
 --
 ALTER TABLE `recuperacao`
   ADD KEY `utilizador` (`utilizador`,`confirmacao`);
 
 --
--- Índices para tabela `sub_modalidades`
+-- Índices de tabela `sub_modalidades`
 --
 ALTER TABLE `sub_modalidades`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `usuarios`
+-- Índices de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- AUTO_INCREMENT para tabelas despejadas
 --
 
 --
@@ -313,7 +313,7 @@ ALTER TABLE `detalhes_medico`
 -- AUTO_INCREMENT de tabela `escalas`
 --
 ALTER TABLE `escalas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=757;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1019;
 
 --
 -- AUTO_INCREMENT de tabela `medicos`

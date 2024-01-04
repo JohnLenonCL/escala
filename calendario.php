@@ -249,17 +249,17 @@ include("banco_de_dados/escalasBanco.php");
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
-                                <select id="semana" name="semana" class="form-control" required>
+                                <select id="semana" name="semana" class="form-control">
                                     <option selected disabled value="">Selecione...</option>
-                                    <option value="Monday">Segunda</option>
-                                    <option value="Tuesday">Terça</option>
-                                    <option value="Wednesday">Quarta</option>
-                                    <option value="Thursday">Quinta</option>
-                                    <option value="Friday">Sexta</option>
-                                    <option value="Saturday">Sábado</option>
-                                    <option value="Sunday">Domingo</option>
+                                    <option value="Monday" name="Segunda">Segunda</option>
+                                    <option value="Tuesday" name="Terça">Terça</option>
+                                    <option value="Wednesday" name="Quarta">Quarta</option>
+                                    <option value="Thursday" name="Quinta">Quinta</option>
+                                    <option value="Friday" name="Sexta">Sexta</option>
+                                    <option value="Saturday" name="Sábado">Sábado</option>
+                                    <option value="Sunday" name="Domingo">Domingo</option>
                                 </select>
-                                <input name="tags_1" id="tags_1" type="text" class="tags form-control"/>
+                                <input name="tags_1" id="tags_1" type="text" class="tags form-control" />
                                 <span id="msg_semana"></span>
                             </div>
                             <div class="modal-footer">
@@ -390,7 +390,7 @@ include("banco_de_dados/escalasBanco.php");
     <?php include("scripts.php"); ?>
 
 
-<script>
+    <script>
         function delete_escala() {
             var remover_event_id = $('#event_id2').val();
             var resposta = confirm("Deseja remover o evento?");
@@ -623,32 +623,67 @@ include("banco_de_dados/escalasBanco.php");
 
 
         $(document).ready(function() {
+            document.getElementById('tags_1_addTag').parentNode.removeChild(document.getElementById('tags_1_addTag'));
             var switchEventMap = {};
             var contador = 0;
 
             $('#vigencia').on('change', function() {
                 if ($(this).val() === 'dia') {
                     document.getElementById('semana').disabled = true;
-                }
-                else {
+                } else {
                     document.getElementById('semana').disabled = false;
                 }
             });
             $('#edit_vigencia').on('change', function() {
                 if ($(this).val() === 'dia') {
                     document.getElementById('edit_semana').disabled = true;
-                    document.getElementById('tags_1').disabled = true;
-                }
-                else {
+                } else {
                     document.getElementById('edit_semana').disabled = false;
                 }
             });
 
 
             $('#semana').on('change', function() {
-                    document.getElementById('tags_1').value += $(this).val()+",";
-                    console.log('tags_1', document.getElementById('tags_1').value);
+                var div = document.getElementById('tags_1_tagsinput');
+                if (div) {
+                    var span = document.createElement('span');
+                    span.classList.add('tag');
+
+                    span.setAttribute('data-value', $(this).val());
+
+                    var innerSpan = document.createElement('span');
+                    var optionSelecionada = $(this).find('option:selected');
+                    var nomeDaOpcao = optionSelecionada.attr('name');
+                    innerSpan.textContent = nomeDaOpcao + " ";
+
+                    var anchor = document.createElement('a');
+                    anchor.setAttribute('href', '');
+                    anchor.setAttribute('title', 'remover tag');
+                    anchor.textContent = 'x';
+
+                    anchor.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        span.parentNode.removeChild(span);
+                        updateInputValue();
+                    });
+
+                    span.appendChild(innerSpan);
+                    span.appendChild(anchor);
+
+                    div.appendChild(span);
+                    updateInputValue();
+                }
             });
+
+            function updateInputValue() {
+                var tags = Array.from(document.querySelectorAll('#tags_1_tagsinput .tag'))
+                    .map(span => span.getAttribute('data-value'));
+                document.getElementById('tags_1').value = tags.join(',');
+                console.log('tags', tags);
+                console.log('value', document.getElementById('tags_1').value);
+            }
+
+
 
             $('.switch, .switchsub').on('change', function() {
                 var modalidadeId = $(this).data('modalidade-id');
@@ -678,9 +713,9 @@ include("banco_de_dados/escalasBanco.php");
                     if (contador === 0) {
                         $('#calendar').fullCalendar('removeEvents');
                         $('#calendar').fullCalendar('addEventSource', originalEvents2);
-                        
+
                     }
-                    
+
                 }
             });
 

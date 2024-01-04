@@ -181,7 +181,7 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Médicos</label>
                                 <select id="medico" name="medico" class="form-control" required>
-                                    <option selected disabled value="">Selecione...</option>
+                                    <option selected hidden value="">Selecione...</option>
                                     <?php
                                     $clinica = $_GET['clinica'];
 
@@ -237,7 +237,7 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Vigência</label>
                                 <select id="vigencia" name="vigencia" class="form-control" required>
-                                    <option selected disabled value="">Selecione...</option>
+                                    <option selected hidden value="">Selecione...</option>
                                     <option value="dia">Dia</option>
                                     <option value="semana">Semana</option>
                                     <option value="mes">Mês</option>
@@ -248,9 +248,9 @@ include("banco_de_dados/escalasBanco.php");
                                 <span id="msg_vigencia"></span>
                             </div>
                             <div class="form-group col-md-12 col-sm-12">
-                                <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
+                                <label id="label_semana" class="control-label">Dias da semana em que o turno ficará disponivel</label>
                                 <select id="semana" name="semana" class="form-control">
-                                    <option selected disabled value="">Selecione...</option>
+                                    <option hidden selected value="">Selecione...</option>
                                     <option value="Monday" name="Segunda">Segunda</option>
                                     <option value="Tuesday" name="Terça">Terça</option>
                                     <option value="Wednesday" name="Quarta">Quarta</option>
@@ -289,7 +289,7 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Médicos</label>
                                 <select id="edit_medico" name="edit_medico" class="form-control" required>
-                                    <option selected disabled value="">Selecione...</option>
+                                    <option selected hidden value="">Selecione...</option>
                                     <?php
                                     $clinica = $_GET['clinica'];
 
@@ -344,7 +344,7 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Vigência</label>
                                 <select id="edit_vigencia" name="edit_vigencia" class="form-control" required>
-                                    <option selected disabled value="">Selecione...</option>
+                                    <option selected hidden value="">Selecione...</option>
                                     <option value="dia">Dia</option>
                                     <option value="semana">Semana</option>
                                     <option value="mes">Mês</option>
@@ -357,7 +357,7 @@ include("banco_de_dados/escalasBanco.php");
                             <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
                                 <select id="edit_semana" name="edit_semana" class="form-control" required>
-                                    <option selected disabled value="">Selecione...</option>
+                                    <option selected hidden value="">Selecione...</option>
                                     <option value="Monday">Segunda</option>
                                     <option value="Tuesday">Terça</option>
                                     <option value="Wednesday">Quarta</option>
@@ -623,6 +623,7 @@ include("banco_de_dados/escalasBanco.php");
 
 
         $(document).ready(function() {
+            document.getElementById('tags_1_tagsinput').hidden = true;
             document.getElementById('tags_1_addTag').parentNode.removeChild(document.getElementById('tags_1_addTag'));
             var switchEventMap = {};
             var contador = 0;
@@ -630,8 +631,14 @@ include("banco_de_dados/escalasBanco.php");
             $('#vigencia').on('change', function() {
                 if ($(this).val() === 'dia') {
                     document.getElementById('semana').disabled = true;
+                    document.getElementById('tags_1_tagsinput').hidden = true;
+                    document.getElementById('semana').hidden = true;
+                    document.getElementById('label_semana').hidden = true;
                 } else {
                     document.getElementById('semana').disabled = false;
+                    document.getElementById('tags_1_tagsinput').hidden = false;
+                    document.getElementById('semana').hidden = false;
+                    document.getElementById('label_semana').hidden = false;
                 }
             });
             $('#edit_vigencia').on('change', function() {
@@ -645,42 +652,45 @@ include("banco_de_dados/escalasBanco.php");
 
             $('#semana').on('change', function() {
                 var div = document.getElementById('tags_1_tagsinput');
+                document.getElementById('tags_1_tagsinput').hidden = false;
                 if (div) {
                     var span = document.createElement('span');
                     span.classList.add('tag');
-
                     span.setAttribute('data-value', $(this).val());
-
                     var innerSpan = document.createElement('span');
                     var optionSelecionada = $(this).find('option:selected');
                     var nomeDaOpcao = optionSelecionada.attr('name');
                     innerSpan.textContent = nomeDaOpcao + " ";
-
                     var anchor = document.createElement('a');
                     anchor.setAttribute('href', '');
                     anchor.setAttribute('title', 'remover tag');
                     anchor.textContent = 'x';
-
                     anchor.addEventListener('click', function(event) {
                         event.preventDefault();
                         span.parentNode.removeChild(span);
                         updateInputValue();
                     });
-
-                    span.appendChild(innerSpan);
-                    span.appendChild(anchor);
-
-                    div.appendChild(span);
-                    updateInputValue();
+                    var spans = document.getElementById('tags_1').value;
+                    var spansArray = spans.split(",");
+                    if (!spansArray.includes($(this).val())) {
+                        span.appendChild(innerSpan);
+                        span.appendChild(anchor);
+                        div.insertBefore(span, div.lastChild);
+                        updateInputValue();
+                    }
                 }
             });
+
 
             function updateInputValue() {
                 var tags = Array.from(document.querySelectorAll('#tags_1_tagsinput .tag'))
                     .map(span => span.getAttribute('data-value'));
                 document.getElementById('tags_1').value = tags.join(',');
-                console.log('tags', tags);
-                console.log('value', document.getElementById('tags_1').value);
+
+                if (document.getElementById('tags_1').value === "") {
+                    $('#semana').find('option:selected').removeAttr('selected');
+                    document.getElementById('tags_1_tagsinput').hidden = true;
+                }
             }
 
 

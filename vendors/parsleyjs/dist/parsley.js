@@ -2268,7 +2268,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     notblank: "Este valor não deve estar em branco.",
     required: "Este valor é obrigatório.",
     pattern: "Este valor parece ser inválido.",
-    min: "Este valor deve ser maior ou igual a %s.",
+    min: "Este valor é muito curto. Deve ter pelo menos %s números.",
     max: "Este valor deve ser menor ou igual a %s.",
     range: "Este valor deve estar entre %s e %s.",
     minlength: "Este valor é muito curto. Deve ter pelo menos %s caracteres.",
@@ -2277,7 +2277,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     mincheck: "Você deve selecionar pelo menos %s opções.",
     maxcheck: "Você deve selecionar no máximo %s opções.",
     check: "Você deve selecionar entre %s e %s opções.",
-    equalto: "Este valor deve ser igual."
+    equalto: "Este valor deve ser igual.",
 });
 
 Parsley.setLocale('pt-br');

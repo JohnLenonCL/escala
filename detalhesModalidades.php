@@ -200,6 +200,18 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
 
     <script>
         $(document).ready(function() {
+            var sucessoAoRecarregar = localStorage.getItem('sucessoAoRecarregar');
+            if (sucessoAoRecarregar) {
+                new PNotify({
+                    title: 'Salvar',
+                    text: 'Sub modalidade salva com sucesso!',
+                    type: 'success',
+                    styling: 'bootstrap3'
+                });
+
+                localStorage.removeItem('sucessoAoRecarregar');
+            }
+
             var cadastrarId;
             $('#subenviarid').click(function(event) {
                 event.preventDefault();
@@ -208,10 +220,10 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
 
                 $('#form').submit(function(e) {
                     e.preventDefault();
-    
-    
+
+
                     const subnome = document.getElementById('subnome').value;
-    
+
                     $.ajax({
                         type: 'POST',
                         url: 'banco_de_dados/modalidadesBanco.php?id=' + cadastrarId + '&subnome=' + subnome,
@@ -221,17 +233,9 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                         dataType: 'json',
                         success: function(response) {
                             if (response.status === 'success') {
-                                new PNotify({
-                                    title: 'Cadastro',
-                                    text: response.message,
-                                    type: 'success',
-                                    styling: 'bootstrap3'
-                                });
                                 document.getElementById('subnome').value = "";
-
-                                setTimeout(function() {
+                                localStorage.setItem('sucessoAoRecarregar', 'true');
                                 window.location.reload();
-                            }, 1100);
                             }
                         },
                     });

@@ -51,6 +51,14 @@
 <script src="vendors/fullcalendar/dist/lang-all.js"></script>
 <script src="vendors/fullcalendar/dist/lang/pt-br.js"></script>
 
+<!-- jquery.inputmask -->
+<script src="vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+<!-- jQuery Knob -->
+<script src="vendors/jquery-knob/dist/jquery.knob.min.js"></script>
+
+<!-- Incluindo o jQuery Mask Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
 
 
 <!-- Custom Theme Scripts -->

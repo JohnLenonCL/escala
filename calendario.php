@@ -629,7 +629,7 @@ include("banco_de_dados/escalasBanco.php");
             var contador = 0;
 
             $('#vigencia').on('change', function() {
-                if ($(this).val() === 'dia') {
+                if ($(this).val() === 'dia' || $(this).val() === '15dias' || $(this).val() === '15em15dias') {
                     document.getElementById('semana').disabled = true;
                     document.getElementById('tags_1_tagsinput').hidden = true;
                     document.getElementById('semana').hidden = true;

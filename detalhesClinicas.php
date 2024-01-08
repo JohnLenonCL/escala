@@ -68,7 +68,11 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <a href="listaClinicas.php"><h2>Clínicas</h2></a> <h2>/</h2> <h2>Modalidades </h2>
+                                <a href="listaClinicas.php">
+                                    <h2>Clínicas</h2>
+                                </a>
+                                <h2>/</h2>
+                                <h2>Modalidades </h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -133,7 +137,11 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
 
                         <div class="x_panel">
                             <div class="x_title">
-                            <a href="listaClinicas.php"><h2>Clínicas</h2></a> <h2>/</h2> <h2>Médicos</h2>
+                                <a href="listaClinicas.php">
+                                    <h2>Clínicas</h2>
+                                </a>
+                                <h2>/</h2>
+                                <h2>Médicos</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -266,6 +274,55 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                             dataType: "JSON"
                         });
                     }
+                });
+
+                //Problema: Não está mudando a checkbox por conta do js-switch
+                //Solução: Fazer a configuração carregar sem precisar excluir a datatable, pois isso está interferindo no idioma também
+                $(document).ready(function() {
+                    $('#datatable-responsive-medicos').DataTable({
+                        columnDefs: [{
+                                targets: 4,
+                                orderable: false,
+                                render: function(data, type, row) {
+                                    if (type === 'sort') {
+                                        return $(data).is(':checked') ? '1' : '2';
+                                    }
+                                    return data;
+                                }
+                            },
+                            {
+                                targets: 0,
+                                visible: false,
+                                orderable: false
+                            },
+                            {
+                                targets: 1,
+                                orderable: false
+                            },
+                            {
+                                targets: 2,
+                                orderable: false
+                            },
+                            {
+                                targets: 3,
+                                orderable: false
+                            },
+                            {
+                                targets: 4,
+                                orderable: false
+                            },
+                            {
+                                targets: 5,
+                                orderable: false
+                            },
+                        ],
+                        order: [
+                            [4, 'asc'],
+                            [1, 'asc']
+                        ],
+
+                    });
+
                 });
             </script>
             <!-- /Checkbox -->

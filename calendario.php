@@ -341,33 +341,6 @@ include("banco_de_dados/escalasBanco.php");
                                 </div>
                             </div>
 
-                            <!-- <div class="form-group col-md-12 col-sm-12">
-                                <label class="control-label">Vigência</label>
-                                <select id="edit_vigencia" name="edit_vigencia" class="form-control" required>
-                                    <option selected hidden value="">Selecione...</option>
-                                    <option value="dia">Dia</option>
-                                    <option value="semana">Semana</option>
-                                    <option value="mes">Mês</option>
-                                    <option value="ano">Ano</option>
-                                    <option value="15dias">15 dias</option>
-                                    <option value="15em15dias">15 em 15 dias</option>
-                                </select>
-                                <span id="msg_vigencia"></span>
-                            </div>
-                            <div class="form-group col-md-12 col-sm-12">
-                                <label class="control-label">Dias da semana em que o turno ficará disponivel</label>
-                                <select id="edit_semana" name="edit_semana" class="form-control" required>
-                                    <option selected hidden value="">Selecione...</option>
-                                    <option value="Monday">Segunda</option>
-                                    <option value="Tuesday">Terça</option>
-                                    <option value="Wednesday">Quarta</option>
-                                    <option value="Thursday">Quinta</option>
-                                    <option value="Friday">Sexta</option>
-                                    <option value="Saturday">Sábado</option>
-                                    <option value="Sunday">Domingo</option>
-                                </select>
-                                <span id="msg_semana"></span>
-                            </div> -->
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" onclick="delete_escala()">Remover</button>
                                 <button type="button" class="btn btn-secondary antoclose2" data-dismiss="modal">Fechar</button>

@@ -77,6 +77,16 @@ include("banco_de_dados/usuariosBanco.php");
                                                 <input class="form-control" data-parsley-equalto="#password1" minlength="6" type="password" password2 id="password2" name="password2" required='required' data-parsley-equalto="#password1" />
                                             </div>
                                         </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-3 label-align">Cargo<span class="required">*</span></label>
+                                            <div class="col-6">
+                                                <select class="form-control" id="cargo" name="cargo" required="required">
+                                                    <option hidden value="">Selecione...</option>
+                                                    <option value="administrador">Administrador</option>
+                                                    <option value="gestor">Gestor</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="ln_solid">
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
@@ -124,6 +134,7 @@ include("banco_de_dados/usuariosBanco.php");
                 const cpf = document.getElementById('cpf').value;
                 const password1 = document.getElementById('password1').value;
                 const password2 = document.getElementById('password2').value;
+                const cargo = document.getElementById('cargo').value;
                 e.preventDefault();
                 if (password1 == password2) {
                     const password = password1;
@@ -134,7 +145,8 @@ include("banco_de_dados/usuariosBanco.php");
                             nome: nome,
                             email: email,
                             cpf: cpf,
-                            password: password
+                            password: password,
+                            cargo: cargo
                         },
                         dataType: 'json',
                         success: function(response) {
@@ -151,6 +163,7 @@ include("banco_de_dados/usuariosBanco.php");
                                 document.getElementById('cpf').value = "";
                                 document.getElementById('password1').value = "";
                                 document.getElementById('password2').value = "";
+                                $('#cargo').find('option:selected').removeAttr('selected');
                             }
                         },
                     });

@@ -69,6 +69,10 @@ include("banco_de_dados/usuariosBanco.php");
                                                     <td class="align-middle"><?php echo $usuarios['email']; ?></td>
                                                     <td class="align-middle"><?php echo $usuarios['cpf']; ?></td>
                                                     <td class="align-middle d-flex justify-content-between">
+                                                        <form style="margin: 0px;" action="detalhesUsuarios.php?id=<?php echo $usuarios['id'] ?>" method="POST">
+                                                            <input type="text" name="nome_usuario" value="<?php echo $usuarios['nome']; ?>" hidden="true">
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;"></a>
+                                                        </form>
                                                         <div>
                                                             <a href="editarCadastros.php?usuario=<?php echo $usuarios['id'] ?>" class='fa fa-pencil'></a>
                                                         </div>
@@ -77,7 +81,12 @@ include("banco_de_dados/usuariosBanco.php");
                                                         </div>
                                                     </td>
                                                 </tr>
-
+                                                <script>
+                                                    function submitForm(link) {
+                                                        var form = link.closest('form');
+                                                        form.submit();
+                                                    }
+                                                </script>
                                             <?php
                                             endforeach;
                                             ?>

@@ -15,12 +15,17 @@ if (isset($_GET["enviar"])) {
     $email = trim($_POST['email']);
     $cpf = trim($_POST['cpf']);
     $senha = trim($_POST['password']);
+    $cargo = trim($_POST['cargo']);
     $hashSenha = password_hash($senha, PASSWORD_DEFAULT);
-    $resultado = $mysqli->query("INSERT INTO usuarios (nome, email, cpf, senha) VALUES('$nome', '$email', '$cpf', '$hashSenha')") or die($mysqli->error);
+    $resultado = $mysqli->query("INSERT INTO usuarios (nome, email, cpf, senha, cargo) VALUES('$nome', '$email', '$cpf', '$hashSenha', '$cargo')") or die($mysqli->error);
 
     if ($resultado) {
         $response = array("status" => "success", "message" => "Seu cadastro foi realizado com sucesso");
         echo json_encode($response);
         exit;
-    } 
+    }
+}
+
+if (isset($_POST["nome_usuario"])) {
+    echo '<script>window.location.href = window.location.href;</script>';
 }

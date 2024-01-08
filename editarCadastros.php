@@ -221,7 +221,7 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-3 label-align">CPF <span class="required">*</span></label>
                                                 <div class="col-6">
-                                                    <input class="form-control" type="text" data-validate-length-range="14" name="cpf" id="cpf" maxlength="14" required="required" value="<?php
+                                                    <input class="form-control" type="text" data-validate-length-range="14" name="cpf" id="cpf" minlength="14" maxlength="14" required="required" value="<?php
                                                                                                                                                                                             $id = $_GET['medico'];
                                                                                                                                                                                             $sql = "SELECT cpf FROM medicos WHERE id = $id";
 
@@ -236,21 +236,19 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                                                                                                                                                                                                 echo "$cpf";
                                                                                                                                                                                             }
                                                                                                                                                                                             ?>">
-                                                    <span style="color:#E74C3C;" id="msgcpf"></span>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-3 label-align">Senha<span class="required">*</span></label>
                                                 <div class="col-6">
-                                                    <input class="form-control" type="password" id="password1" name="password" required />
+                                                    <input class="form-control" minlength="6" type="password" id="password1" name="password" required />
 
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-3 label-align">Repita sua senha<span class="required">*</span></label>
                                                 <div class="col-6">
-                                                    <input class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
-                                                    <span id="msgsenha" style="color:#E74C3C;"></span>
+                                                    <input data-parsley-equalto="#password1" minlength="6" class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
@@ -275,22 +273,6 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                 </div>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var form = document.querySelector('form');
-
-                        form.addEventListener('submit', function(event) {
-                            var password1 = document.getElementById('password1').value;
-                            var password2 = document.getElementsByName('password2')[0].value;
-
-                            if (password1 !== password2) {
-                                document.getElementById('msgsenha').innerText = 'As senhas devem ser iguais';
-                                event.preventDefault();
-                            }
-                        });
-                    });
-                </script>
-
-                <script>
                     function formatCPF(cpf) {
                         cpf = cpf.replace(/\D/g, '');
                         cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
@@ -304,21 +286,6 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                         input.value = formatCPF(input.value);
                     });
 
-                    document.getElementById('enviar').addEventListener('click', function() {
-                        var cpfInput = document.getElementById('cpf');
-                        var msgCpf = document.getElementById('msgcpf');
-
-                        var cpfValue = cpfInput.value.replace(/\D/g, '');
-
-                        if (cpfValue.length !== 11 && cpfValue.length >= 1) {
-
-                            msgCpf.textContent = 'CPF incompleto';
-                        } else {
-
-                            msgCpf.textContent = '';
-
-                        }
-                    });
                 </script>
             <?php } ?>
             <!-- /medico -->
@@ -386,7 +353,7 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-3 label-align">CPF <span class="required">*</span></label>
                                                 <div class="col-6">
-                                                    <input class="form-control" type="text" data-validate-length-range="14" name="cpf" id="cpf" maxlength="14" required="required" value="<?php
+                                                    <input class="form-control" type="text" data-validate-length-range="14" name="cpf" id="cpf" minlength="14" maxlength="14" required="required" value="<?php
                                                                                                                                                                                             $id = $_GET['usuario'];
                                                                                                                                                                                             $sql = "SELECT cpf FROM usuarios WHERE id = $id";
 
@@ -401,21 +368,19 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                                                                                                                                                                                                 echo "$cpf";
                                                                                                                                                                                             }
                                                                                                                                                                                             ?>">
-                                                    <span style="color:#E74C3C;" id="msgcpf"></span>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-3 label-align">Senha<span class="required">*</span></label>
                                                 <div class="col-6">
-                                                    <input class="form-control" type="password" id="password1" name="password" required />
+                                                    <input class="form-control" minlength="6" type="password" id="password1" name="password" required />
 
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-3 label-align">Repita sua senha<span class="required">*</span></label>
                                                 <div class="col-6">
-                                                    <input class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
-                                                    <span id="msgsenha" style="color:#E74C3C;"></span>
+                                                    <input data-parsley-equalto="#password1" minlength="6" class="form-control" type="password" id="password2" name="password2" data-validate-linked='password' required='required' />
                                                 </div>
                                             </div>
                                             <div class="ln_solid">
@@ -434,22 +399,6 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                 </div>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var form = document.querySelector('form');
-
-                        form.addEventListener('submit', function(event) {
-                            var password1 = document.getElementById('password1').value;
-                            var password2 = document.getElementsByName('password2')[0].value;
-
-                            if (password1 !== password2) {
-                                document.getElementById('msgsenha').innerText = 'As senhas devem ser iguais';
-                                event.preventDefault();
-                            }
-                        });
-                    });
-                </script>
-
-                <script>
                     function formatCPF(cpf) {
                         cpf = cpf.replace(/\D/g, '');
                         cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
@@ -463,21 +412,6 @@ if (isset($_GET['clinica']) and isset($_POST['atualizar'])) {
                         input.value = formatCPF(input.value);
                     });
 
-                    document.getElementById('enviar').addEventListener('click', function() {
-                        var cpfInput = document.getElementById('cpf');
-                        var msgCpf = document.getElementById('msgcpf');
-
-                        var cpfValue = cpfInput.value.replace(/\D/g, '');
-
-                        if (cpfValue.length !== 11 && cpfValue.length >= 1) {
-
-                            msgCpf.textContent = 'CPF incompleto';
-                        } else {
-
-                            msgCpf.textContent = '';
-
-                        }
-                    });
                 </script>
             <?php } ?>
             <!-- /usuario -->

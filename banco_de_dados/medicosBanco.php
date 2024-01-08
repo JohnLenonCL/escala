@@ -89,7 +89,6 @@ if (isset($_GET["salvar-modalidade-medico"])) {
     $check_query = $mysqli->query("SELECT * FROM detalhes_medico WHERE id_modalidade = '$id_modalidade' AND id_medico = '$id_medico' AND id_sub = '$id_submodalidade'");
 
     if ($check_query->num_rows > 0) {
-        // Se a combinação existe, obtenha o valor atual de verificar
         $existing_row = $check_query->fetch_assoc();
         $existing_verificar = $existing_row['verificar'];
         $new_verificar = $existing_verificar == '1' ? '0' : '1';

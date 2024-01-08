@@ -341,7 +341,7 @@ include("banco_de_dados/escalasBanco.php");
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-12 col-sm-12">
+                            <!-- <div class="form-group col-md-12 col-sm-12">
                                 <label class="control-label">Vigência</label>
                                 <select id="edit_vigencia" name="edit_vigencia" class="form-control" required>
                                     <option selected hidden value="">Selecione...</option>
@@ -367,7 +367,7 @@ include("banco_de_dados/escalasBanco.php");
                                     <option value="Sunday">Domingo</option>
                                 </select>
                                 <span id="msg_semana"></span>
-                            </div>
+                            </div> -->
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" onclick="delete_escala()">Remover</button>
                                 <button type="button" class="btn btn-secondary antoclose2" data-dismiss="modal">Fechar</button>

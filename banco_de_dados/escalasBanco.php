@@ -139,8 +139,8 @@ if (isset($_POST['medico'], $_POST['date'], $_POST['start_time'], $_POST['end_ti
     if ($vigencia == '15dias') {
         $startRecur = new DateTime($data);
         $endRecur = clone $startRecur;
-        $endRecur->modify('+15 days'); // Modificado para +15 dias em vez de +1 semana
-        $intervalo = new DateInterval('P14D'); // Modificado para intervalo de 1 dia
+        $endRecur->modify('+15 days'); 
+        $intervalo = new DateInterval('P14D'); 
         $periodo = new DatePeriod($startRecur, $intervalo, $endRecur);
 
         foreach ($periodo as $data) {

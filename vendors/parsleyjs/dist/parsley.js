@@ -2273,7 +2273,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     range: "Este valor deve estar entre %s e %s.",
     minlength: "Este valor é muito curto. Deve ter pelo menos %s caracteres.",
     maxlength: "Este valor é muito longo. Deve ter no máximo %s caracteres.",
-    length: "O comprimento deste valor é inválido. Deve estar entre %s e %s caracteres.",
+    length: "O comprimento deste valor é inválido.",
     mincheck: "Você deve selecionar pelo menos %s opções.",
     maxcheck: "Você deve selecionar no máximo %s opções.",
     check: "Você deve selecionar entre %s e %s opções.",

@@ -61,7 +61,7 @@ include("banco_de_dados/usuariosBanco.php");
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3 label-align">CPF<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" type="text" data-inputmask="'mask': '999.999.999-99'" name="cpf" id="cpf" required="required">
+                                                <input class="form-control" type="text" minlength="14" maxlength="14" name="cpf" id="cpf" required="required">
                                             </div>
                                         </div>
                                         <div class="field item form-group">
@@ -74,7 +74,7 @@ include("banco_de_dados/usuariosBanco.php");
                                         <div class="field item form-group">
                                             <label class="col-form-label col-3 label-align">Repita sua senha<span class="required">*</span></label>
                                             <div class="col-6">
-                                                <input class="form-control" minlength="6" type="password" password2 id="password2" name="password2" required='required' data-parsley-equalto="#password1" />
+                                                <input class="form-control" data-parsley-equalto="#password1" minlength="6" type="password" password2 id="password2" name="password2" required='required' data-parsley-equalto="#password1" />
                                             </div>
                                         </div>
                                         <div class="ln_solid">
@@ -102,6 +102,20 @@ include("banco_de_dados/usuariosBanco.php");
     <script src="vendors/validator/multifield.js"></script>
     <script src="vendors/validator/validator.js"></script>
 
+    <script>
+        function formatCPF(cpf) {
+            cpf = cpf.replace(/\D/g, '');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            return cpf;
+        }
+
+        document.getElementById('cpf').addEventListener('input', function(event) {
+            var input = event.target;
+            input.value = formatCPF(input.value);
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('form').submit(function(e) {

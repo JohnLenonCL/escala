@@ -14,7 +14,7 @@ if (isset($_GET["trocarImagem"])) {
             $target_dir = "imagens/";
             $target_file = $target_dir . uniqid() . "_" . basename($_FILES["foto"]["name"]);
 
-            $allowedExtensions = array("jpg", "jpeg", "png", "gif"); // Adicione ou remova extensões conforme necessário
+            $allowedExtensions = array("jpg", "jpeg", "png", "gif"); 
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
             if (in_array($imageFileType, $allowedExtensions)) {

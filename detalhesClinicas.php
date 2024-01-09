@@ -332,3 +332,6 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
 </body>
 
 </html>
+
+
+<!-- Comentario de teste -->

@@ -77,7 +77,7 @@ $submodalidades = $mysqli->query("SELECT * FROM sub_modalidades");
                                             <tr>
                                                 <th style="width: 0px;">#</th>
                                                 <th>Nome</th>
-                                                <th style="width: 0px;">Ações</th>
+                                                <th style="width: 0px;">&nbsp;&nbsp;Ações&nbsp;&nbsp;</th>
                                             </tr>
                                         </thead>
                                         <tbody>

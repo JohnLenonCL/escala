@@ -94,18 +94,42 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $i = 0;
-                                            foreach ($modalidades as $modalidades) :
+                                            $modalidadesMarcados = [];
+                                            $modalidadesNaoMarcados = [];
 
+                                            foreach ($modalidades as $modalidade) {
+                                                $marcado = false;
+                                                foreach ($algo as $item) {
+                                                    if ($item['id_modalidade'] == $modalidade['id'] && $item['verificar']) {
+                                                        $marcado = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if ($marcado) {
+                                                    $modalidadesMarcados[] = $modalidade;
+                                                } else {
+                                                    $modalidadesNaoMarcados[] = $modalidade;
+                                                }
+                                            }
+
+                                            usort($modalidadesNaoMarcados, function ($a, $b) {
+                                                return strcmp($a['nome'], $b['nome']);
+                                            });
+
+                                            $modalidadesOrdenados = array_merge($modalidadesMarcados, $modalidadesNaoMarcados);
+
+                                            $i = 0;
+                                            foreach ($modalidadesOrdenados as $modalidade) :
                                             ?>
                                                 <tr>
                                                     <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
-                                                    <td class="align-middle"> <?php echo $modalidades['nome']; ?></td>
+                                                    <td class="align-middle"> <?php echo $modalidade['nome']; ?></td>
                                                     <td class="align-middle">
-                                                        <input id="switch" data-id="<?php echo $modalidades['id'] ?>" type="checkbox" class="js-switch" <?php
+                                                        <input id="switch" data-id="<?php echo $modalidade['id'] ?>" type="checkbox" class="js-switch" <?php
                                                                                                                                                         foreach ($algo as $item) :
 
-                                                                                                                                                            if ($item['id_modalidade'] == $modalidades['id']) {
+                                                                                                                                                            if ($item['id_modalidade'] == $modalidade['id']) {
                                                                                                                                                                 echo $item['verificar'] ? "checked" : '';
                                                                                                                                                             }
 
@@ -113,9 +137,9 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                                                                                                                                         ?> />
                                                     </td>
                                                     <td class="align-middle d-flex justify-content-center">
-                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $modalidades['id'] ?>" method="post">
-                                                            <input type="text" name="nome_modalidade" value="<?php echo $modalidades['nome']; ?>" hidden="true">
-                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" name="enviar_nome_modalidade" id="<?php echo $modalidades['id'] ?>"></a>
+                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $modalidade['id'] ?>" method="post">
+                                                            <input type="text" name="nome_modalidade" value="<?php echo $modalidade['nome']; ?>" hidden="true">
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" name="enviar_nome_modalidade" id="<?php echo $modalidade['id'] ?>"></a>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -164,33 +188,57 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                         </thead>
                                         <tbody>
                                             <?php
+                                            $medicosMarcados = [];
+                                            $medicosNaoMarcados = [];
+
+                                            foreach ($medicos as $medico) {
+                                                $marcado = false;
+                                                foreach ($algo as $item) {
+                                                    if ($item['id_medico'] == $medico['id'] && $item['verificar']) {
+                                                        $marcado = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if ($marcado) {
+                                                    $medicosMarcados[] = $medico;
+                                                } else {
+                                                    $medicosNaoMarcados[] = $medico;
+                                                }
+                                            }
+
+                                            usort($medicosNaoMarcados, function ($a, $b) {
+                                                return strcmp($a['nome'], $b['nome']);
+                                            });
+
+                                            $medicosOrdenados = array_merge($medicosMarcados, $medicosNaoMarcados);
+
                                             $i = 0;
-                                            foreach ($medicos as $medicos) :
-
+                                            foreach ($medicosOrdenados as $medico) :
                                             ?>
-                                                <tr id="<?php echo $medicos['id'] ?>">
+                                                <tr id="<?php echo $medico['id']; ?>">
                                                     <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
-                                                    <td class="align-middle"> <?php echo $medicos['nome']; ?></td>
-                                                    <td><?php echo $medicos['email']; ?></td>
-                                                    <td><?php echo $medicos['cpf']; ?></td>
+                                                    <td class="align-middle"><?php echo $medico['nome']; ?></td>
+                                                    <td><?php echo $medico['email']; ?></td>
+                                                    <td><?php echo $medico['cpf']; ?></td>
                                                     <td class="align-middle">
-                                                        <input id="switch-medico" data-id="<?php echo $medicos['id'] ?>" type="checkbox" class="js-switch" <?php
+                                                        <input id="switch-medico" data-id="<?php echo $medico['id'] ?>" type="checkbox" class="js-switch" <?php
                                                                                                                                                             foreach ($algo as $item) :
-
-                                                                                                                                                                if ($item['id_medico'] == $medicos['id']) {
+                                                                                                                                                                if ($item['id_medico'] == $medico['id']) {
                                                                                                                                                                     echo $item['verificar'] ? "checked" : '';
+                                                                                                                                                                    break;
                                                                                                                                                                 }
-
                                                                                                                                                             endforeach;
                                                                                                                                                             ?> />
                                                     </td>
                                                     <td class="align-middle d-flex justify-content-center">
-                                                        <form style="margin: 0px;" action="detalhesMedicos.php?id=<?php echo $medicos['id'] ?>" method="post">
-                                                            <input type="text" name="nome_medico" value="<?php echo $medicos['nome']; ?>" hidden="true">
-                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_medico" id="<?php echo $medicos['id'] ?>"></a>
+                                                        <form style="margin: 0px;" action="detalhesMedicos.php?id=<?php echo $medico['id'] ?>" method="post">
+                                                            <input type="text" name="nome_medico" value="<?php echo $medico['nome']; ?>" hidden="true">
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_medico" id="<?php echo $medico['id'] ?>"></a>
                                                         </form>
                                                     </td>
                                                 </tr>
+
                                                 <script>
                                                     function submitForm(link) {
                                                         var form = link.closest('form');
@@ -199,9 +247,9 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                                 </script>
                                             <?php
                                             endforeach;
-
                                             ?>
                                         </tbody>
+
                                     </table>
                                 </div>
                             </div>
@@ -274,55 +322,6 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                             dataType: "JSON"
                         });
                     }
-                });
-
-                //Problema: Não está mudando a checkbox por conta do js-switch
-                //Solução: Fazer a configuração carregar sem precisar excluir a datatable, pois isso está interferindo no idioma também
-                $(document).ready(function() {
-                    $('#datatable-responsive-medicos').DataTable({
-                        columnDefs: [{
-                                targets: 4,
-                                orderable: false,
-                                render: function(data, type, row) {
-                                    if (type === 'sort') {
-                                        return $(data).is(':checked') ? '1' : '2';
-                                    }
-                                    return data;
-                                }
-                            },
-                            {
-                                targets: 0,
-                                visible: false,
-                                orderable: false
-                            },
-                            {
-                                targets: 1,
-                                orderable: false
-                            },
-                            {
-                                targets: 2,
-                                orderable: false
-                            },
-                            {
-                                targets: 3,
-                                orderable: false
-                            },
-                            {
-                                targets: 4,
-                                orderable: false
-                            },
-                            {
-                                targets: 5,
-                                orderable: false
-                            },
-                        ],
-                        order: [
-                            [4, 'asc'],
-                            [1, 'asc']
-                        ],
-
-                    });
-
                 });
             </script>
             <!-- /Checkbox -->

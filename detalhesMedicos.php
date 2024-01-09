@@ -93,15 +93,39 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $i = 0;
                                             $sub_modalidades = $mysqli->query("SELECT * FROM sub_modalidades");
-                                            foreach ($sub_modalidades as $sub_modalidades) :
+                                            $sub_modalidadesMarcados = [];
+                                            $sub_modalidadesNaoMarcados = [];
 
+                                            foreach ($sub_modalidades as $sub_modalidade) {
+                                                $marcado = false;
+                                                foreach ($algo as $item) {
+                                                    if ($item['id_sub'] == $sub_modalidade['id'] && $item['verificar']) {
+                                                        $marcado = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if ($marcado) {
+                                                    $sub_modalidadesMarcados[] = $sub_modalidade;
+                                                } else {
+                                                    $sub_modalidadesNaoMarcados[] = $sub_modalidade;
+                                                }
+                                            }
+
+                                            usort($sub_modalidadesNaoMarcados, function ($a, $b) {
+                                                return strcmp($a['nome'], $b['nome']);
+                                            });
+
+                                            $sub_modalidadesOrdenados = array_merge($sub_modalidadesMarcados, $sub_modalidadesNaoMarcados);
+
+                                            $i = 0;
+                                            foreach ($sub_modalidadesOrdenados as $sub_modalidade) :
                                             ?>
                                                 <tr>
                                                     <td class="align-middle" scope="row"><?php echo ++$i; ?></td>
                                                     <td class="align-middle"><?php
-                                                                                $id = $sub_modalidades['id_modalidades'];
+                                                                                $id = $sub_modalidade['id_modalidades'];
                                                                                 $sql = "SELECT nome FROM modalidades WHERE id = $id";
 
                                                                                 $result = $mysqli->query($sql);
@@ -115,22 +139,22 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                                                                     echo "$nome";
                                                                                 }
                                                                                 ?></td>
-                                                    <td class="align-middle"><?php echo $sub_modalidades['nome']; ?></td>
+                                                    <td class="align-middle"><?php echo $sub_modalidade['nome']; ?></td>
                                                     <td class="align-middle">
-                                                        <input id="switch" data-modalidade="<?php echo $sub_modalidades['id_modalidades'] ?>" data-id="<?php echo $sub_modalidades['id'] ?>" type="checkbox" class="js-switch" <?php
-                                                                                                                                                            foreach ($algo as $item) :
+                                                        <input id="switch" data-modalidade="<?php echo $sub_modalidade['id_modalidades'] ?>" data-id="<?php echo $sub_modalidade['id'] ?>" type="checkbox" class="js-switch" <?php
+                                                                                                                                                                                                                                foreach ($algo as $item) :
 
-                                                                                                                                                                if ($item['id_sub'] == $sub_modalidades['id']) {
-                                                                                                                                                                    echo $item['verificar'] ? "checked" : '';
-                                                                                                                                                                }
+                                                                                                                                                                                                                                    if ($item['id_sub'] == $sub_modalidade['id']) {
+                                                                                                                                                                                                                                        echo $item['verificar'] ? "checked" : '';
+                                                                                                                                                                                                                                    }
 
-                                                                                                                                                            endforeach;
-                                                                                                                                                            ?> />
+                                                                                                                                                                                                                                endforeach;
+                                                                                                                                                                                                                                ?> />
                                                     </td>
                                                     <td class="align-middle d-flex justify-content-center">
-                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $sub_modalidades['id_modalidades'] ?>" method="post">
+                                                        <form style="margin: 0px;" action="detalhesModalidades.php?id=<?php echo $sub_modalidade['id_modalidades'] ?>" method="post">
                                                             <input type="text" name="nome_modalidade" value="<?php
-                                                                                                                $id = $sub_modalidades['id_modalidades'];
+                                                                                                                $id = $sub_modalidade['id_modalidades'];
                                                                                                                 $sql = "SELECT nome FROM modalidades WHERE id = $id";
 
                                                                                                                 $result = $mysqli->query($sql);
@@ -144,7 +168,7 @@ $detalhes_clinica = $mysqli->query("SELECT * FROM detalhes_clinica");
                                                                                                                     echo "$nome";
                                                                                                                 }
                                                                                                                 ?>" hidden="true">
-                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $sub_modalidades['id_modalidades'] ?>"></a>
+                                                            <a href="javascript:void(0);" onclick="submitForm(this);" class="fa fa-eye" style="border:none; background-color:transparent;" type="submit" name="enviar_nome_modalidade" id="<?php echo $sub_modalidade['id_modalidades'] ?>"></a>
                                                         </form>
                                                     </td>
                                                 </tr>

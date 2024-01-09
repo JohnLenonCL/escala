@@ -50,7 +50,7 @@ include("banco_de_dados/medicosBanco.php");
                                                 <th>Nome</th>
                                                 <th>Email</th>
                                                 <th>CPF</th>
-                                                <th style="width: 0px">Ações</th>
+                                                <th style="width: 0px">&nbsp;&nbsp;Ações&nbsp;&nbsp;</th>
                                             </tr>
                                         </thead>
                                         <tbody>
